@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+/*
+  SuppleMate 設計 token
+  暖米白底、白色圓角卡片、淡棕邊框；綠色代表完成／主要操作，橘色代表庫存不足，黃色代表尚未確認。
+*/
+:root {
+  --cream: #f8f5f1;
+  --cream-deep: #f1ece4;
+  --paper: #ffffff;
+  --line: #dbcfbf;
+  --line-soft: color-mix(in srgb, #dbcfbf 50%, transparent);
+
+  --ink: #222222;
+  --text: #333333;
+  --text-2: #666666;
+  --text-3: #888888;
+  --placeholder: #aaaaaa;
+
+  --sage-700: #2b7a64;
+  --sage-600: #36947a;
+  --sage-100: #e3f0ea;
+  --sage-50: color-mix(in srgb, #36947a 8%, white);
+
+  --blue-600: #225dab;
+  --blue-50: color-mix(in srgb, #225dab 8%, white);
+
+  --orange-600: #e95919;
+  --orange-50: color-mix(in srgb, #e95919 10%, white);
+
+  --amber-600: #c9951a;
+  --amber-500: #e5ae22;
+  --amber-50: color-mix(in srgb, #e5ae22 14%, white);
+
+  --sky-600: #3e95bd;
+  --sky-50: color-mix(in srgb, #3e95bd 10%, white);
+}
+
+@theme inline {
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-paper: var(--paper);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+
+  --color-ink: var(--ink);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-placeholder: var(--placeholder);
+
+  --color-sage-700: var(--sage-700);
+  --color-sage-600: var(--sage-600);
+  --color-sage-100: var(--sage-100);
+  --color-sage-50: var(--sage-50);
+
+  --color-blue-600: var(--blue-600);
+  --color-blue-50: var(--blue-50);
+
+  --color-orange-600: var(--orange-600);
+  --color-orange-50: var(--orange-50);
+
+  --color-amber-600: var(--amber-600);
+  --color-amber-500: var(--amber-500);
+  --color-amber-50: var(--amber-50);
+
+  --color-sky-600: var(--sky-600);
+  --color-sky-50: var(--sky-50);
+
+  --font-sans: var(--font-albert), var(--font-noto-tc), "PingFang TC", "Microsoft JhengHei", sans-serif;
+
+  --radius-card: 20px;
+  --radius-chip: 10px;
+
+  --shadow-card: 0 0.25rem 1rem color-mix(in srgb, var(--blue-600) 8%, transparent);
+}
+
+html {
+  background: var(--cream);
+}
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-feature-settings: "palt" on;
+  -webkit-font-smoothing: antialiased;
+  min-width: 320px;
+}
+
+/* 數字用等寬數字對齊 */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 手機安全區 */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 讓日期輸入在 iOS 上不要縮小 */
+input[type="date"] {
+  min-height: 2.75rem;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.25s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+  }
+}
