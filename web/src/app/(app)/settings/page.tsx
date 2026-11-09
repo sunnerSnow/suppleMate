@@ -9,21 +9,21 @@ import { Field, Select, SelectWrap } from "@/components/ui/field";
 import { AppTop, PageHeader } from "@/components/ui/page-header";
 import { useToast } from "@/components/ui/toast";
 import { useStore } from "@/lib/store/store-provider";
-import { THEME_LABELS, applyThemeToDocument } from "@/lib/theme";
+import { DEFAULT_THEME, THEME_LABELS, applyThemeToDocument } from "@/lib/theme";
 import { THEMES, type Theme } from "@/lib/types";
 
 const TIMEZONES = ["Asia/Taipei", "Asia/Tokyo", "Asia/Hong_Kong", "Asia/Singapore", "Asia/Shanghai", "UTC"];
 
 const SWATCHES: Record<Theme, string[]> = {
-  c: ["#FAF2EB", "#222222", "#D57563", "#3280CF", "#F5E9DE"],
-  e: ["#018C3E", "#1D2088", "#00B9EF", "#EA5504", "#FFF040"],
+  a: ["#FAF2EB", "#222222", "#D57563", "#3280CF", "#F5E9DE"],
+  b: ["#018C3E", "#1D2088", "#00B9EF", "#EA5504", "#FFF040"],
 };
 
 export default function SettingsPage() {
   const store = useStore();
   const toast = useToast();
   const [confirm, setConfirm] = useState<"sample" | "clear" | null>(null);
-  const current: Theme = store.profile?.theme ?? "c";
+  const current: Theme = store.profile?.theme ?? DEFAULT_THEME;
 
   const pickTheme = async (theme: Theme) => {
     if (theme === current) return;

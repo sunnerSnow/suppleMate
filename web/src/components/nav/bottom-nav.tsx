@@ -12,7 +12,7 @@ const TABS = [
   { href: "/guide", label: "方案", Icon: ListIcon },
 ] as const;
 
-/** 底部導覽：C 是文字＋紅色點狀底線；E 是深藍底、作用中變黃色圓形 */
+/** 底部導覽：A 是文字＋紅色點狀底線；B 是深藍底、作用中變黃色圓形 */
 export function BottomNav() {
   const pathname = usePathname();
   return (

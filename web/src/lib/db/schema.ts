@@ -17,9 +17,9 @@ export const profiles = sm.table("profiles", {
   email: text("email"),
   displayName: text("display_name"),
   timezone: text("timezone").notNull().default("Asia/Taipei"),
-  theme: text("theme", { enum: ["c", "e"] })
+  theme: text("theme", { enum: ["a", "b"] })
     .notNull()
-    .default("c"),
+    .default("a"),
   healthGoals: text("health_goals", { enum: HEALTH_GOALS }).array().notNull().default([]),
   ageRange: text("age_range", { enum: AGE_RANGES }),
   sex: text("sex", { enum: SEXES }),

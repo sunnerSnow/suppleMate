@@ -1,17 +1,17 @@
 import type { SVGProps } from "react";
 import { cx } from "@/lib/cx";
 
-/** 波浪分隔線（只在 E 主題顯示） */
+/** 波浪分隔線（只在 B 主題顯示） */
 export function Wave({ sky }: { sky?: boolean }) {
   return <div className={cx("wave", sky && "sky")} aria-hidden />;
 }
 
-/** 黃色點點列（只在 E 主題顯示） */
+/** 黃色點點列（只在 B 主題顯示） */
 export function Dots({ className }: { className?: string }) {
   return <div className={cx("dots", className)} aria-hidden />;
 }
 
-/** 手繪愛心（C 主題的裝飾） */
+/** 手繪愛心（A 主題的裝飾） */
 export function Heart({ className, ...rest }: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -29,7 +29,7 @@ export function Heart({ className, ...rest }: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** 小圖示跑馬燈（只在 E 主題顯示） */
+/** 小圖示跑馬燈（只在 B 主題顯示） */
 export function Marquee() {
   const tiles = (
     <>

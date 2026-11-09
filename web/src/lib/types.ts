@@ -93,8 +93,8 @@ export type InventoryTransaction = {
   createdAt: string;
 };
 
-/** 介面主題：c＝繪本粗線、e＝旅行雜誌濃彩 */
-export const THEMES = ["c", "e"] as const;
+/** 介面主題：a＝繪本粗線、b＝旅行雜誌濃彩 */
+export const THEMES = ["a", "b"] as const;
 export type Theme = (typeof THEMES)[number];
 
 /** 健檢用的保健目標（多選）；只用來提示常見選擇，不是診斷 */

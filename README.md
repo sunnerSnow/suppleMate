@@ -16,40 +16,40 @@
 | **紀錄** `/history` | 服用與庫存的歷史，依日期分組。 |
 | **方案** `/guide` | 依目前的保健品與小知識，排出一天的時段總覽、建議補上的時段、要分開／可一起的搭配提醒。 |
 | **健檢** `/checkup` | 一鍵健檢：內建規則立刻找出可調整、可考慮不用、建議增加、要注意的地方；再按一下請 AI 做整體深度分析。 |
-| **設定** `/settings` | 介面主題（C／E 兩套可切換）、時區、帳號、重設範例資料／清除資料。 |
+| **設定** `/settings` | 介面主題（A／B 兩套可切換）、時區、帳號、重設範例資料／清除資料。 |
 
 ## 畫面
 
 本機示範模式、示範使用者 A 的範例資料，手機尺寸（390×844）。兩套主題共用同一份頁面，只換 CSS；每套各兩排，順序都是 登入、今日、保健品、庫存 ／ 紀錄、方案、健檢、設定。點圖可看原尺寸。
 
-**C 繪本粗線**（預設）
+**A 繪本粗線**（預設）
 
 <p>
-  <a href="docs/screenshots/login-c.png"><img src="docs/screenshots/login-c.png" width="200" alt="登入（C）"></a>
-  <a href="docs/screenshots/today-c.png"><img src="docs/screenshots/today-c.png" width="200" alt="今日（C）"></a>
-  <a href="docs/screenshots/supplements-c.png"><img src="docs/screenshots/supplements-c.png" width="200" alt="保健品（C）"></a>
-  <a href="docs/screenshots/inventory-c.png"><img src="docs/screenshots/inventory-c.png" width="200" alt="庫存（C）"></a>
+  <a href="docs/screenshots/login-a.png"><img src="docs/screenshots/login-a.png" width="200" alt="登入（A）"></a>
+  <a href="docs/screenshots/today-a.png"><img src="docs/screenshots/today-a.png" width="200" alt="今日（A）"></a>
+  <a href="docs/screenshots/supplements-a.png"><img src="docs/screenshots/supplements-a.png" width="200" alt="保健品（A）"></a>
+  <a href="docs/screenshots/inventory-a.png"><img src="docs/screenshots/inventory-a.png" width="200" alt="庫存（A）"></a>
 </p>
 <p>
-  <a href="docs/screenshots/history-c.png"><img src="docs/screenshots/history-c.png" width="200" alt="紀錄（C）"></a>
-  <a href="docs/screenshots/guide-c.png"><img src="docs/screenshots/guide-c.png" width="200" alt="方案（C）"></a>
-  <a href="docs/screenshots/checkup-c.png"><img src="docs/screenshots/checkup-c.png" width="200" alt="健檢（C）"></a>
-  <a href="docs/screenshots/settings-c.png"><img src="docs/screenshots/settings-c.png" width="200" alt="設定（C）"></a>
+  <a href="docs/screenshots/history-a.png"><img src="docs/screenshots/history-a.png" width="200" alt="紀錄（A）"></a>
+  <a href="docs/screenshots/guide-a.png"><img src="docs/screenshots/guide-a.png" width="200" alt="方案（A）"></a>
+  <a href="docs/screenshots/checkup-a.png"><img src="docs/screenshots/checkup-a.png" width="200" alt="健檢（A）"></a>
+  <a href="docs/screenshots/settings-a.png"><img src="docs/screenshots/settings-a.png" width="200" alt="設定（A）"></a>
 </p>
 
-**E 旅行雜誌濃彩**
+**B 旅行雜誌濃彩**
 
 <p>
-  <a href="docs/screenshots/login-e.png"><img src="docs/screenshots/login-e.png" width="200" alt="登入（E）"></a>
-  <a href="docs/screenshots/today-e.png"><img src="docs/screenshots/today-e.png" width="200" alt="今日（E）"></a>
-  <a href="docs/screenshots/supplements-e.png"><img src="docs/screenshots/supplements-e.png" width="200" alt="保健品（E）"></a>
-  <a href="docs/screenshots/inventory-e.png"><img src="docs/screenshots/inventory-e.png" width="200" alt="庫存（E）"></a>
+  <a href="docs/screenshots/login-b.png"><img src="docs/screenshots/login-b.png" width="200" alt="登入（B）"></a>
+  <a href="docs/screenshots/today-b.png"><img src="docs/screenshots/today-b.png" width="200" alt="今日（B）"></a>
+  <a href="docs/screenshots/supplements-b.png"><img src="docs/screenshots/supplements-b.png" width="200" alt="保健品（B）"></a>
+  <a href="docs/screenshots/inventory-b.png"><img src="docs/screenshots/inventory-b.png" width="200" alt="庫存（B）"></a>
 </p>
 <p>
-  <a href="docs/screenshots/history-e.png"><img src="docs/screenshots/history-e.png" width="200" alt="紀錄（E）"></a>
-  <a href="docs/screenshots/guide-e.png"><img src="docs/screenshots/guide-e.png" width="200" alt="方案（E）"></a>
-  <a href="docs/screenshots/checkup-e.png"><img src="docs/screenshots/checkup-e.png" width="200" alt="健檢（E）"></a>
-  <a href="docs/screenshots/settings-e.png"><img src="docs/screenshots/settings-e.png" width="200" alt="設定（E）"></a>
+  <a href="docs/screenshots/history-b.png"><img src="docs/screenshots/history-b.png" width="200" alt="紀錄（B）"></a>
+  <a href="docs/screenshots/guide-b.png"><img src="docs/screenshots/guide-b.png" width="200" alt="方案（B）"></a>
+  <a href="docs/screenshots/checkup-b.png"><img src="docs/screenshots/checkup-b.png" width="200" alt="健檢（B）"></a>
+  <a href="docs/screenshots/settings-b.png"><img src="docs/screenshots/settings-b.png" width="200" alt="設定（B）"></a>
 </p>
 
 健檢的完整結果見下方「一鍵健檢」。
@@ -174,8 +174,8 @@ npm run dev        # http://localhost:3000
 - 「建議增加」可一鍵帶到新增頁預填名稱（`/supplements/new?name=`）；套用時段、新增都要使用者按下。
 
 <p>
-  <img src="docs/screenshots/checkup-c-full.png" width="300" alt="一鍵健檢完整結果（C）">
-  <img src="docs/screenshots/checkup-e-full.png" width="300" alt="一鍵健檢完整結果（E）">
+  <img src="docs/screenshots/checkup-a-full.png" width="300" alt="一鍵健檢完整結果（A）">
+  <img src="docs/screenshots/checkup-b-full.png" width="300" alt="一鍵健檢完整結果（B）">
 </p>
 
 （示範資料勾選「睡眠」「骨骼」：B 群時段尚未確認可一鍵套用為早餐後、維生素 D3 常與鈣搭配而清單沒有鈣就建議新增；AI 區塊在示範模式只會回示範內容。）
@@ -184,12 +184,12 @@ npm run dev        # http://localhost:3000
 
 兩套主題共用同一份頁面結構，長相由 `<html data-theme>` 的 CSS 決定（`web/src/app/globals.css`）；使用者在設定頁切換，選擇存在 `sm.profiles.theme`，另外寫 `sm-theme` cookie 讓伺服器端第一次渲染就套對主題，登入後 `ThemeSync` 再依個人設定校正。
 
-- **C 繪本粗線**（預設）：奶油米底、炭黑 3px 線框、珊瑚紅與藍、粗圓體（Huninn＋Zen Maru Gothic）、點狀虛線底線；今日頁是左側黑直線串起時段的時間軸；深色區塊與 L 形轉角線。
-- **E 旅行雜誌濃彩**：濃綠底、深藍／水藍／橘／黃色帶、白卡 3px 黑框＋黃標題條＋紅標籤、波浪分隔、黃點點、跑馬燈、大圓角綠容器；Montserrat＋Noto Sans TC。
+- **A 繪本粗線**（預設）：奶油米底、炭黑 3px 線框、珊瑚紅與藍、粗圓體（Huninn＋Zen Maru Gothic）、點狀虛線底線；今日頁是左側黑直線串起時段的時間軸；深色區塊與 L 形轉角線。
+- **B 旅行雜誌濃彩**：濃綠底、深藍／水藍／橘／黃色帶、白卡 3px 黑框＋黃標題條＋紅標籤、波浪分隔、黃點點、跑馬燈、大圓角綠容器；Montserrat＋Noto Sans TC。
 
 文字一律深色或深底白字（對比達 WCAG AA），顏色只做背景、邊框與圖示；`prefers-reduced-motion` 時動畫關閉。設計稿在 `design/theme-proposals.html`。
 
-App icon 是「四格藥盒」（膠囊、打勾、錠劑、愛心），C、E 各一套色（`web/public/icons/`，提案在 `design/icon-proposals.html`）。favicon、Apple touch icon 與 PWA manifest 都依 `sm-theme` cookie 跟著主題切換（`layout.tsx` 的 `generateMetadata`、`app/manifest.ts`）；PNG 由 SVG 以無頭瀏覽器轉出，`src/app/favicon.ico` 是 C 版的 16／32／48。
+App icon 是「四格藥盒」（膠囊、打勾、錠劑、愛心），A、B 各一套色（`web/public/icons/`，提案在 `design/icon-proposals.html`）。favicon、Apple touch icon 與 PWA manifest 都依 `sm-theme` cookie 跟著主題切換（`layout.tsx` 的 `generateMetadata`、`app/manifest.ts`）；PNG 由 SVG 以無頭瀏覽器轉出，`src/app/favicon.ico` 是 A 版的 16／32／48。
 
 繁中字型（Huninn、Noto Sans TC，皆 SIL OFL 1.1）不用 `next/font/google`，改為自架分片：`scripts/subset-font.py` 用 fonttools 依 unicode-range 切成各 6 片 woff2（第 0 片是基本符號＋介面用到的中文字，其餘是 Big5 常用字），瀏覽器只下載用到的片；Noto Sans TC 保留可變字重軸。原因是 Vercel 建置時向 Google 下載幾百個分片偶爾回 500，整個 build 會跟著失敗。改了介面文案後重跑腳本，新字才會進第 0 片（不重跑也只是多一個請求）。英數字型（Zen Maru Gothic、Montserrat）體積小，仍走 `next/font/google`。
 
@@ -257,7 +257,7 @@ npm run test
 | Step 1–4 MVP：四個主要頁面、CRUD、服用紀錄與庫存交易 | 完成 |
 | Step 5 後端：Neon Postgres＋Better Auth＋RLS | 完成 |
 | 第二階段：小知識＋建議方案（內建資料＋AI 補充） | 完成 |
-| 介面主題：C／E 可切換 | 完成 |
+| 介面主題：A／B 可切換 | 完成 |
 | 一鍵健檢：內建規則＋AI 深度分析 | 完成 |
 | Step 6 部署到 Vercel | 完成 |
 

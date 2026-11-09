@@ -35,14 +35,14 @@
   .fav svg { width: 16px; height: 16px; }
   .brand-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
   .wordmark { font-weight: 900; font-size: 22px; letter-spacing: -0.01em; }
-  .wordmark.e { font-style: italic; color: #1d2088; }
+  .wordmark.b { font-style: italic; color: #1d2088; }
   footer { padding: 0 24px 40px; color: #666; font-size: 12px; }
 </style>
 </head>
 <body>
 <header>
   <h1>SuppleMate app icon／favicon 提案</h1>
-  <p class="sub">四個概念 × 兩套主題色（C 繪本粗線、E 旅行雜誌濃彩）。每個都看 512／180／64／32／16 五個尺寸、淺底與深底、以及 Android maskable 的安全區（紅色虛線圓內要放得下主體）。</p>
+  <p class="sub">四個概念 × 兩套主題色（主題 A 繪本粗線、主題 B 旅行雜誌濃彩；A–D 是 icon 概念的編號，與主題代號無關）。每個都看 512／180／64／32／16 五個尺寸、淺底與深底、以及 Android maskable 的安全區（紅色虛線圓內要放得下主體）。</p>
 </header>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -121,20 +121,20 @@
 <main id="main"></main>
 
 <footer>
-  實作建議：favicon 與 app icon 依使用者主題切換（layout 讀到 <code>sm-theme</code> cookie 後指到 C 或 E 版本的 SVG）；Apple touch icon 與 PWA manifest 的 PNG 由 Next 的 <code>ImageResponse</code> 在建置時產生，不用手動匯出。16px 版本會自動用同一份 SVG 縮放，主體已刻意留大，不另做簡化版。
+  實作建議：favicon 與 app icon 依使用者主題切換（layout 讀到 <code>sm-theme</code> cookie 後指到 A 或 B 版本的 SVG）；Apple touch icon 與 PWA manifest 的 PNG 由 Next 的 <code>ImageResponse</code> 在建置時產生，不用手動匯出。16px 版本會自動用同一份 SVG 縮放，主體已刻意留大，不另做簡化版。
 </footer>
 
 <script>
   const THEMES = {
-    c: {
-      name: "C 繪本粗線",
+    a: {
+      name: "主題 A 繪本粗線",
       swatch: ["#FAF2EB", "#222222", "#D57563", "#3280CF", "#F5E9DE"],
       vars: { "--bg": "#FAF2EB", "--ink": "#222222", "--pill1": "#D57563", "--pill2": "#FFFFFF", "--check": "#3280CF", "--check-bg": "#FFFFFF",
               "--letter": "#D57563", "--italic": "normal", "--cell1": "#F5E9DE", "--cell2": "#FFFFFF", "--cell3": "#F5E9DE", "--heart": "#D57563", "--cheek": "#D57563" },
       wordmark: "SuppleMate",
     },
-    e: {
-      name: "E 旅行雜誌濃彩",
+    b: {
+      name: "主題 B 旅行雜誌濃彩",
       swatch: ["#018C3E", "#1D2088", "#00B9EF", "#EA5504", "#FFF040"],
       vars: { "--bg": "#018C3E", "--ink": "#1D2088", "--pill1": "#EA5504", "--pill2": "#FFFFFF", "--check": "#1D2088", "--check-bg": "#FFF040",
               "--letter": "#1D2088", "--italic": "italic", "--cell1": "#FFF040", "--cell2": "#FFFFFF", "--cell3": "#00B9EF", "--heart": "#EA5504", "--cheek": "#FFF040" },
@@ -143,9 +143,9 @@
   };
   const CONCEPTS = [
     { id: "A", title: "膠囊打勾", desc: "斜放的兩色膠囊＋右下角的打勾徽章：直接說明「保健品＋吃了沒」。主體大、線條粗，16px 仍看得出膠囊與勾。" },
-    { id: "B", title: "S 膠囊", desc: "直立膠囊當作字母 S 的底，粗體 S 置中（E 主題用斜體呼應 wordmark）。最像「品牌字母」的做法，辨識度高但少了「記錄」的意涵。" },
+    { id: "B", title: "S 膠囊", desc: "直立膠囊當作字母 S 的底，粗體 S 置中（B 主題用斜體呼應 wordmark）。最像「品牌字母」的做法，辨識度高但少了「記錄」的意涵。" },
     { id: "C", title: "四格藥盒", desc: "藥盒四格各放膠囊、打勾、錠劑、愛心（mate）：功能一次說完，大尺寸很有故事感；16px 時細節會糊，靠色塊辨識。" },
-    { id: "D", title: "笑臉膠囊 Mate", desc: "膠囊有表情、加一個小打勾：最貼近「助手」與 C 主題的繪本感；E 主題靠深藍粗線與黃腮紅維持雜誌風。" },
+    { id: "D", title: "笑臉膠囊 Mate", desc: "膠囊有表情、加一個小打勾：最貼近「助手」與 A 主題的繪本感；B 主題靠深藍粗線與黃腮紅維持雜誌風。" },
   ];
   const SIZES = [160, 180, 64, 32, 16];
   const svg = (id, vars, px, cls = "") => `<svg class="icon ${cls}" width="${px}" height="${px}" style="${Object.entries(vars).map(([k, v]) => `${k}:${v}`).join(";")}"><use href="#${id}" /></svg>`;

@@ -2,15 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat, Zen_Maru_Gothic } from "next/font/google";
 import { cookies } from "next/headers";
 import { ToastProvider } from "@/components/ui/toast";
-import { DEFAULT_THEME, THEME_COOKIE, isTheme } from "@/lib/theme";
+import { THEME_COOKIE, normalizeTheme } from "@/lib/theme";
 import "./globals.css";
 // 繁中字型自架分片（scripts/subset-font.py 產生）：建置不再依賴 Google Fonts 的下載是否成功
 import "./fonts/huninn/huninn.css";
 import "./fonts/noto-sans-tc/noto-sans-tc.css";
 
-// 主題 C：粉圓體（繁中，自架）＋ Zen Maru Gothic（英數）
+// 主題 A：粉圓體（繁中，自架）＋ Zen Maru Gothic（英數）
 const zenMaru = Zen_Maru_Gothic({ variable: "--font-zen-maru", weight: ["700", "900"], subsets: ["latin"] });
-// 主題 E：Noto Sans TC（繁中，自架）＋ Montserrat（英數）
+// 主題 B：Noto Sans TC（繁中，自架）＋ Montserrat（英數）
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   weight: ["700", "800", "900"],
@@ -20,10 +20,10 @@ const montserrat = Montserrat({
 
 async function currentTheme() {
   const cookieTheme = (await cookies()).get(THEME_COOKIE)?.value;
-  return isTheme(cookieTheme) ? cookieTheme : DEFAULT_THEME;
+  return normalizeTheme(cookieTheme);
 }
 
-/** icon 跟著主題：C 繪本粗線／E 旅行雜誌濃彩各一套（public/icons/，由 design/icon-proposals.html 的概念 C 產生） */
+/** icon 跟著主題：A 繪本粗線／B 旅行雜誌濃彩各一套（public/icons/，由 design/icon-proposals.html 的概念 C 產生） */
 export async function generateMetadata(): Promise<Metadata> {
   const theme = await currentTheme();
   return {

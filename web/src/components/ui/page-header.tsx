@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cx } from "@/lib/cx";
 
-/** 頂欄：logo 帶（E 下方有波浪邊）；右側放操作 */
+/** 頂欄：logo 帶（B 下方有波浪邊）；右側放操作 */
 export function AppTop({ action }: { action?: ReactNode }) {
   return (
     <>
@@ -17,7 +17,7 @@ export function AppTop({ action }: { action?: ReactNode }) {
   );
 }
 
-/** 英文小標：C 是黑色膠囊、E 是深藍大字 */
+/** 英文小標：A 是黑色膠囊、B 是深藍大字 */
 export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
   return <span className={cx("eyebrow", className)}>{children}</span>;
 }
@@ -46,7 +46,7 @@ export function PageHeader({
   );
 }
 
-/** 區塊小標（時段名稱等）＋右側計數；en 是 E 主題顯示的英文小字 */
+/** 區塊小標（時段名稱等）＋右側計數；en 是 B 主題顯示的英文小字 */
 export function SectionTitle({
   children,
   aside,

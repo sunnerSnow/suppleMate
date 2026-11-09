@@ -8,7 +8,7 @@ import { formatTime } from "@/lib/date";
 import { formatQuantity } from "@/lib/domain/inventory";
 import type { PlanItem } from "@/lib/types";
 
-/** 今日頁的一列：類別膠囊＋名稱＋右側勾選圈（C 條列式／E 卡內列） */
+/** 今日頁的一列：類別膠囊＋名稱＋右側勾選圈（A 條列式／B 卡內列） */
 export function PlanItemCard({
   item,
   pending,

@@ -1,17 +1,17 @@
 import type { MetadataRoute } from "next";
 import { cookies } from "next/headers";
-import { DEFAULT_THEME, THEME_COOKIE, isTheme } from "@/lib/theme";
+import { THEME_COOKIE, normalizeTheme } from "@/lib/theme";
 import type { Theme } from "@/lib/types";
 
-/** 加到主畫面時的名稱、顏色與 icon；跟著 sm-theme cookie 用 C 或 E 版 */
+/** 加到主畫面時的名稱、顏色與 icon；跟著 sm-theme cookie 用 A 或 B 版 */
 const COLORS: Record<Theme, { background: string; theme: string }> = {
-  c: { background: "#FAF2EB", theme: "#222222" },
-  e: { background: "#018C3E", theme: "#1D2088" },
+  a: { background: "#FAF2EB", theme: "#222222" },
+  b: { background: "#018C3E", theme: "#1D2088" },
 };
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const cookieTheme = (await cookies()).get(THEME_COOKIE)?.value;
-  const theme: Theme = isTheme(cookieTheme) ? cookieTheme : DEFAULT_THEME;
+  const theme: Theme = normalizeTheme(cookieTheme);
   return {
     name: "SuppleMate 保健品管理助手",
     short_name: "SuppleMate",
