@@ -18,6 +18,42 @@
 | **健檢** `/checkup` | 一鍵健檢：內建規則立刻找出可調整、可考慮不用、建議增加、要注意的地方；再按一下請 AI 做整體深度分析。 |
 | **設定** `/settings` | 介面主題（C／E 兩套可切換）、時區、帳號、重設範例資料／清除資料。 |
 
+## 畫面
+
+本機示範模式、示範使用者 A 的範例資料，手機尺寸（390×844）。兩套主題共用同一份頁面，只換 CSS；每套各兩排，順序都是 登入、今日、保健品、庫存 ／ 紀錄、方案、健檢、設定。點圖可看原尺寸。
+
+**C 繪本粗線**（預設）
+
+<p>
+  <a href="docs/screenshots/login-c.png"><img src="docs/screenshots/login-c.png" width="200" alt="登入（C）"></a>
+  <a href="docs/screenshots/today-c.png"><img src="docs/screenshots/today-c.png" width="200" alt="今日（C）"></a>
+  <a href="docs/screenshots/supplements-c.png"><img src="docs/screenshots/supplements-c.png" width="200" alt="保健品（C）"></a>
+  <a href="docs/screenshots/inventory-c.png"><img src="docs/screenshots/inventory-c.png" width="200" alt="庫存（C）"></a>
+</p>
+<p>
+  <a href="docs/screenshots/history-c.png"><img src="docs/screenshots/history-c.png" width="200" alt="紀錄（C）"></a>
+  <a href="docs/screenshots/guide-c.png"><img src="docs/screenshots/guide-c.png" width="200" alt="方案（C）"></a>
+  <a href="docs/screenshots/checkup-c.png"><img src="docs/screenshots/checkup-c.png" width="200" alt="健檢（C）"></a>
+  <a href="docs/screenshots/settings-c.png"><img src="docs/screenshots/settings-c.png" width="200" alt="設定（C）"></a>
+</p>
+
+**E 旅行雜誌濃彩**
+
+<p>
+  <a href="docs/screenshots/login-e.png"><img src="docs/screenshots/login-e.png" width="200" alt="登入（E）"></a>
+  <a href="docs/screenshots/today-e.png"><img src="docs/screenshots/today-e.png" width="200" alt="今日（E）"></a>
+  <a href="docs/screenshots/supplements-e.png"><img src="docs/screenshots/supplements-e.png" width="200" alt="保健品（E）"></a>
+  <a href="docs/screenshots/inventory-e.png"><img src="docs/screenshots/inventory-e.png" width="200" alt="庫存（E）"></a>
+</p>
+<p>
+  <a href="docs/screenshots/history-e.png"><img src="docs/screenshots/history-e.png" width="200" alt="紀錄（E）"></a>
+  <a href="docs/screenshots/guide-e.png"><img src="docs/screenshots/guide-e.png" width="200" alt="方案（E）"></a>
+  <a href="docs/screenshots/checkup-e.png"><img src="docs/screenshots/checkup-e.png" width="200" alt="健檢（E）"></a>
+  <a href="docs/screenshots/settings-e.png"><img src="docs/screenshots/settings-e.png" width="200" alt="設定（E）"></a>
+</p>
+
+健檢的完整結果見下方「一鍵健檢」。
+
 ## 技術架構
 
 Next.js 16（App Router）＋ TypeScript ＋ Tailwind 4 ＋ zod ＋ Drizzle ORM ＋ PostgreSQL（正式用 Neon，本機與測試用 PGlite）＋ Better Auth ＋ Google Gemini（結構化輸出）＋ Vitest。
@@ -136,6 +172,13 @@ npm run dev        # http://localhost:3000
   - 注意：綜合維他命與單方重疊的總量、成年男性或年長者長期補鐵先確認、未成年以專業建議為準。
 - **AI 深度分析**（`web/src/lib/services/checkup.ts`）：把清單、個人資料與規則發現交給 Gemini，產生結構化報告（overview、add、remove、adjust、cautions、askProfessional）；remove／adjust 只保留清單裡的名稱。報告存在 `sm.checkups`，同樣的資料不重複分析、不扣額度；資料改了畫面會標「資料已變更」。
 - 「建議增加」可一鍵帶到新增頁預填名稱（`/supplements/new?name=`）；套用時段、新增都要使用者按下。
+
+<p>
+  <img src="docs/screenshots/checkup-c-full.png" width="300" alt="一鍵健檢完整結果（C）">
+  <img src="docs/screenshots/checkup-e-full.png" width="300" alt="一鍵健檢完整結果（E）">
+</p>
+
+（示範資料勾選「睡眠」「骨骼」：B 群時段尚未確認可一鍵套用為早餐後、維生素 D3 常與鈣搭配而清單沒有鈣就建議新增；AI 區塊在示範模式只會回示範內容。）
 
 ## 介面主題與字型
 
