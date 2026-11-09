@@ -18,7 +18,7 @@ export default function SettingsPage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHeader eyebrow="Settings" title="設定" />
+      <PageHeader tone="purple" eyebrow="Settings" title="設定" />
 
       <Card className="mb-4">
         <Field label="時區" htmlFor="tz" hint="用來判斷「今天」是哪一天，以及顯示服用時間。">
@@ -43,7 +43,7 @@ export default function SettingsPage() {
       </Card>
 
       <Card className="mb-4">
-        <h2 className="text-sm font-black text-ink">資料</h2>
+        <h2 className="text-sm font-bold text-ink">資料</h2>
         <p className="mt-1 text-xs text-text-3">示範模式：資料只存在這個瀏覽器裡，尚未同步到雲端。</p>
         <div className="mt-4 flex flex-col gap-2">
           <Button variant="outline" onClick={() => setConfirm("sample")} disabled={store.status !== "ready"}>

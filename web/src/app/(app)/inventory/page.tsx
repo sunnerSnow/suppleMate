@@ -1,19 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { RestockDialog } from "@/components/inventory/restock-dialog";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Badge, Card } from "@/components/ui/card";
 import { BoxIcon, Plus } from "@/components/ui/icons";
 import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/ui/state";
+import type { Tone } from "@/components/ui/tone";
 import { STOCK_STATUS_LABELS } from "@/lib/constants";
 import { dailyConsumption, estimateDaysLeft, formatQuantity, stockStatus } from "@/lib/domain/inventory";
 import { useStore } from "@/lib/store/store-provider";
 import type { StockStatus, Supplement } from "@/lib/types";
 
-const TONE = { sufficient: "sage", low: "amber", out: "orange" } as const;
+const TONE: Record<StockStatus, Tone> = { sufficient: "green", low: "orange", out: "red" };
 const ORDER: Record<StockStatus, number> = { out: 0, low: 1, sufficient: 2 };
 
 export default function InventoryPage() {
@@ -34,6 +35,7 @@ export default function InventoryPage() {
   return (
     <div className="animate-fade-up">
       <PageHeader
+        tone="orange"
         eyebrow="Inventory"
         title="庫存"
         description={
@@ -50,7 +52,8 @@ export default function InventoryPage() {
 
       {store.status === "ready" && rows.length === 0 && (
         <EmptyState
-          icon={<BoxIcon size={26} />}
+          tone="orange"
+          icon={<BoxIcon size={32} />}
           title="還沒有可追蹤的庫存"
           description="新增保健品並填入目前數量，這裡就會顯示剩餘量與預估天數。"
           action={
@@ -63,15 +66,15 @@ export default function InventoryPage() {
       )}
 
       {store.status === "ready" && rows.length > 0 && (
-        <ul className="flex flex-col gap-3">
-          {rows.map(({ s, status, days, perDay }) => (
-            <li key={s.id}>
-              <Card>
+        <ul className="stagger flex flex-col gap-3">
+          {rows.map(({ s, status, days, perDay }, i) => (
+            <li key={s.id} style={{ "--i": i } as CSSProperties}>
+              <Card className={status === "out" ? "border-red/40" : status === "low" ? "border-orange/50" : undefined}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <Link
                       href={`/supplements/${s.id}`}
-                      className="block truncate text-[15px] font-bold text-ink hover:underline"
+                      className="block truncate text-base font-bold text-ink hover:underline"
                     >
                       {s.name}
                     </Link>
@@ -81,9 +84,9 @@ export default function InventoryPage() {
                 </div>
 
                 <div className="mt-3 flex items-end justify-between gap-3">
-                  <p className="tnum text-2xl font-black leading-none text-ink">
-                    {formatQuantity(s.stockQuantity)}{" "}
-                    <span className="text-sm font-bold text-text-2">{s.doseUnit}</span>
+                  <p className="leading-none text-ink">
+                    <span className="font-en tnum text-3xl font-bold">{formatQuantity(s.stockQuantity)}</span>
+                    <span className="ml-1.5 text-sm font-bold text-text-2">{s.doseUnit}</span>
                   </p>
                   <p className="tnum text-right text-sm text-text-2">
                     {days === null ? (
@@ -91,7 +94,10 @@ export default function InventoryPage() {
                     ) : (
                       <>
                         預估剩{" "}
-                        <span className={`font-black ${days <= 7 ? "text-orange-600" : "text-ink"}`}>{days}</span> 天
+                        <span className={`font-en text-lg font-bold ${days <= 7 ? "text-red-text" : "text-ink"}`}>
+                          {days}
+                        </span>{" "}
+                        天
                       </>
                     )}
                   </p>
@@ -138,13 +144,16 @@ function StockBar({
   const full = Math.max(threshold * 3, perDay * 30, quantity, 1);
   const pct = Math.max(0, Math.min(100, (quantity / full) * 100));
   const thresholdPct = Math.min(100, (threshold / full) * 100);
-  const color = status === "out" ? "bg-orange-600" : status === "low" ? "bg-amber-500" : "bg-sage-600";
+  const color = status === "out" ? "bg-red" : status === "low" ? "bg-orange" : "bg-green";
   return (
-    <div className="relative mt-3 h-2 rounded-full bg-cream-deep" aria-hidden>
-      <div className={`h-2 rounded-full transition-[width] duration-500 ${color}`} style={{ width: `${pct}%` }} />
+    <div className="relative mt-3 h-3 rounded-full border border-line bg-cream" aria-hidden>
+      <div
+        className={`h-full rounded-full transition-[width] duration-700 ease-out ${color}`}
+        style={{ width: `${pct}%` }}
+      />
       {threshold > 0 && (
         <span
-          className="absolute top-1/2 h-3.5 w-0.5 -translate-y-1/2 rounded bg-text-3/60"
+          className="absolute top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-ink/40"
           style={{ left: `${thresholdPct}%` }}
         />
       )}

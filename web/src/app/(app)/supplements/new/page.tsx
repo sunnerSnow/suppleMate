@@ -13,7 +13,7 @@ export default function NewSupplementPage() {
 
   return (
     <div className="animate-fade-up">
-      <PageHeader eyebrow="New" title="新增保健品" />
+      <PageHeader tone="green" eyebrow="New" title="新增保健品" />
       <SupplementForm
         submitting={store.isPending("supplement:create")}
         submitLabel="新增保健品"

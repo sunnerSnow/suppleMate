@@ -1,96 +1,140 @@
 @import "tailwindcss";
 
 /*
-  SuppleMate 設計 token
-  暖米白底、白色圓角卡片、淡棕邊框；綠色代表完成／主要操作，橘色代表庫存不足，黃色代表尚未確認。
+  SuppleMate 設計 token（v2：活潑圓體版）
+  暖白底、白色厚圓角卡片、每個頁面一個主題色（今日＝天空藍、保健品＝綠、庫存＝橘、紀錄＝紫），
+  黃色當主要操作色、粉紅／紅色只用在提醒。文字一律用深灰，彩色只做背景、邊框與圖示。
 */
 :root {
-  --cream: #f8f5f1;
-  --cream-deep: #f1ece4;
-  --paper: #ffffff;
-  --line: #dbcfbf;
-  --line-soft: color-mix(in srgb, #dbcfbf 50%, transparent);
+  --paper: #fffcf8;
+  --cream: #f5f4ef;
+  --cream-deep: #ebe8df;
+  --line: #e6e1d6;
+  --line-strong: #d6d0c2;
+  /* 互動元件的邊界（輸入框、勾選鈕）：對白底 ≥ 3:1 */
+  --line-ui: #8a8475;
+  /* 鍵盤焦點外框：對米白底 ≥ 3:1 */
+  --focus: #0079a8;
 
-  --ink: #222222;
-  --text: #333333;
-  --text-2: #666666;
-  --text-3: #888888;
-  --placeholder: #aaaaaa;
+  --ink: #333333;
+  --text-2: #525252;
+  --text-3: #6b6b6b;
+  --placeholder: #6f6f6f;
 
-  --sage-700: #2b7a64;
-  --sage-600: #36947a;
-  --sage-100: #e3f0ea;
-  --sage-50: color-mix(in srgb, #36947a 8%, white);
+  /* 主題色（背景／邊框用）與對應的可讀文字色（對白底 ≥ 4.5:1） */
+  --sky: #4bc3e5;
+  --sky-deep: #00aae2;
+  --sky-soft: #e3f6fb;
+  --sky-text: #146f94;
 
-  --blue-600: #225dab;
-  --blue-50: color-mix(in srgb, #225dab 8%, white);
+  --green: #2bb063;
+  --green-deep: #1f9450;
+  --green-soft: #e4f5ea;
+  --green-text: #1b7a43;
 
-  --orange-600: #e95919;
-  --orange-50: color-mix(in srgb, #e95919 10%, white);
+  --orange: #fb9b00;
+  --orange-deep: #d98500;
+  --orange-soft: #fff1d9;
+  --orange-text: #9c5d00;
 
-  --amber-600: #c9951a;
-  --amber-500: #e5ae22;
-  --amber-50: color-mix(in srgb, #e5ae22 14%, white);
+  --yellow: #ffcf19;
+  --yellow-deep: #e0b000;
+  --yellow-soft: #fff7d1;
 
-  --sky-600: #3e95bd;
-  --sky-50: color-mix(in srgb, #3e95bd 10%, white);
+  --purple: #6367b0;
+  --purple-deep: #51549a;
+  --purple-soft: #ecedf7;
+  --purple-text: #4a4d8f;
+
+  --pink: #f55b96;
+  --pink-soft: #fde6ef;
+  --pink-text: #b8286a;
+
+  --red: #ff3330;
+  --red-soft: #ffe5e4;
+  --red-text: #c4201e;
+}
+
+@theme {
+  --ease-pop: cubic-bezier(0.17, 0.88, 0.3, 1.28);
+  --ease-soft: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 @theme inline {
+  --color-paper: var(--paper);
   --color-cream: var(--cream);
   --color-cream-deep: var(--cream-deep);
-  --color-paper: var(--paper);
   --color-line: var(--line);
-  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+  --color-line-ui: var(--line-ui);
+  --color-focus: var(--focus);
 
   --color-ink: var(--ink);
-  --color-text: var(--text);
+  --color-text: var(--ink);
   --color-text-2: var(--text-2);
   --color-text-3: var(--text-3);
   --color-placeholder: var(--placeholder);
 
-  --color-sage-700: var(--sage-700);
-  --color-sage-600: var(--sage-600);
-  --color-sage-100: var(--sage-100);
-  --color-sage-50: var(--sage-50);
+  --color-sky: var(--sky);
+  --color-sky-deep: var(--sky-deep);
+  --color-sky-soft: var(--sky-soft);
+  --color-sky-text: var(--sky-text);
 
-  --color-blue-600: var(--blue-600);
-  --color-blue-50: var(--blue-50);
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-green-soft: var(--green-soft);
+  --color-green-text: var(--green-text);
 
-  --color-orange-600: var(--orange-600);
-  --color-orange-50: var(--orange-50);
+  --color-orange: var(--orange);
+  --color-orange-deep: var(--orange-deep);
+  --color-orange-soft: var(--orange-soft);
+  --color-orange-text: var(--orange-text);
 
-  --color-amber-600: var(--amber-600);
-  --color-amber-500: var(--amber-500);
-  --color-amber-50: var(--amber-50);
+  --color-yellow: var(--yellow);
+  --color-yellow-deep: var(--yellow-deep);
+  --color-yellow-soft: var(--yellow-soft);
 
-  --color-sky-600: var(--sky-600);
-  --color-sky-50: var(--sky-50);
+  --color-purple: var(--purple);
+  --color-purple-deep: var(--purple-deep);
+  --color-purple-soft: var(--purple-soft);
+  --color-purple-text: var(--purple-text);
 
-  --font-sans: var(--font-albert), var(--font-noto-tc), "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --color-pink: var(--pink);
+  --color-pink-soft: var(--pink-soft);
+  --color-pink-text: var(--pink-text);
 
-  --radius-card: 20px;
-  --radius-chip: 10px;
+  --color-red: var(--red);
+  --color-red-soft: var(--red-soft);
+  --color-red-text: var(--red-text);
 
-  --shadow-card: 0 0.25rem 1rem color-mix(in srgb, var(--blue-600) 8%, transparent);
+  --font-sans: var(--font-huninn), "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-en: var(--font-fredoka), var(--font-huninn), sans-serif;
+
+  --radius-card: 24px;
+  --radius-chip: 14px;
 }
 
 html {
-  background: var(--cream);
+  background: var(--paper);
 }
 
 body {
-  background: var(--cream);
-  color: var(--text);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-sans);
-  font-weight: 500;
   letter-spacing: 0.02em;
   font-feature-settings: "palt" on;
   -webkit-font-smoothing: antialiased;
   min-width: 320px;
 }
 
-/* 數字用等寬數字對齊 */
+/* 英文與數字用圓體 Fredoka */
+.font-en {
+  font-family: var(--font-en);
+  letter-spacing: 0.02em;
+}
+
+/* 數字等寬對齊 */
 .tnum {
   font-variant-numeric: tabular-nums;
 }
@@ -100,15 +144,26 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* 讓日期輸入在 iOS 上不要縮小 */
 input[type="date"] {
-  min-height: 2.75rem;
+  min-height: 3rem;
+}
+
+/* 厚底「餅乾」陰影：按鈕與可點卡片按下去會往下壓 */
+.press {
+  box-shadow: var(--btn-shadow, none);
+  transition:
+    transform 0.15s var(--ease-soft),
+    box-shadow 0.15s var(--ease-soft);
+}
+.press:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 0 var(--press-shadow, transparent);
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -116,12 +171,67 @@ input[type="date"] {
   }
 }
 
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(14px);
+  }
+}
+
 .animate-fade-up {
-  animation: fade-up 0.25s ease-out both;
+  animation: fade-up 0.35s var(--ease-soft) both;
+}
+.animate-pop {
+  animation: pop 0.35s var(--ease-pop) both;
+}
+.animate-float {
+  animation: float 3.2s ease-in-out infinite;
+}
+.animate-drift {
+  animation: drift 6s ease-in-out infinite alternate;
+}
+
+/* 清單逐項進場：每個子項用 --i 延遲 */
+.stagger > * {
+  animation: fade-up 0.4s var(--ease-soft) both;
+  /* 最多延遲 8 格，長清單不會等太久 */
+  animation-delay: calc(min(var(--i, 0), 8) * 45ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up {
+  .animate-fade-up,
+  .animate-pop,
+  .animate-float,
+  .animate-drift,
+  .stagger > * {
     animation: none;
+  }
+  .press {
+    transition: none;
+  }
+  .press:active:not(:disabled) {
+    transform: none;
+    box-shadow: var(--btn-shadow, none);
   }
 }

@@ -13,6 +13,12 @@ type ToastApi = {
 
 const ToastContext = createContext<ToastApi | null>(null);
 
+const STYLES: Record<ToastKind, string> = {
+  success: "border-green bg-green-soft text-green-text",
+  error: "border-red bg-red-soft text-red-text",
+  info: "border-sky bg-sky-soft text-sky-text",
+};
+
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const seq = useRef(0);
@@ -43,14 +49,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={t.id}
             role={t.kind === "error" ? "alert" : "status"}
-            className={[
-              "pointer-events-auto w-full max-w-md rounded-xl px-4 py-3 text-sm font-medium shadow-lg",
-              t.kind === "success" && "bg-sage-600 text-white",
-              t.kind === "error" && "bg-rose-600 text-white",
-              t.kind === "info" && "bg-ink text-white",
-            ]
-              .filter(Boolean)
-              .join(" ")}
+            className={`animate-pop pointer-events-auto w-full max-w-md rounded-full border-2 px-5 py-3 text-center text-sm font-bold shadow-[0_3px_0_0_var(--line)] ${STYLES[t.kind]}`}
           >
             {t.message}
           </div>

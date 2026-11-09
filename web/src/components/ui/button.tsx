@@ -1,26 +1,37 @@
 import Link from "next/link";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react";
 import { cx } from "@/lib/cx";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "outline";
 type Size = "sm" | "md" | "lg";
 
-const VARIANTS: Record<Variant, string> = {
-  primary: "bg-sage-600 text-white hover:bg-sage-700 active:bg-sage-700",
-  secondary: "bg-ink text-white hover:bg-text",
-  outline: "bg-paper text-text border border-line hover:bg-cream",
-  ghost: "bg-transparent text-text-2 hover:bg-cream-deep hover:text-text",
-  danger: "bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white",
+/**
+ * 厚底「餅乾」按鈕：底下一條實色陰影，按下時往下壓（.press）。
+ * 文字一律深色或白色且對比 ≥ 4.5:1：黃／天空藍底用深灰字，深綠／深灰底用白字。
+ */
+const VARIANTS: Record<Variant, { cls: string; shadow: string }> = {
+  primary: { cls: "bg-yellow text-ink hover:brightness-105", shadow: "var(--yellow-deep)" },
+  secondary: { cls: "bg-ink text-white hover:bg-text-2", shadow: "#111111" },
+  outline: { cls: "bg-paper text-ink border-2 border-line-strong hover:bg-cream", shadow: "var(--line-strong)" },
+  ghost: { cls: "bg-transparent text-text-2 hover:bg-cream-deep hover:text-ink", shadow: "transparent" },
+  danger: { cls: "bg-red-soft text-red-text hover:bg-red-text hover:text-white", shadow: "#e0b4b3" },
 };
 
 const SIZES: Record<Size, string> = {
-  sm: "h-9 px-4 text-sm gap-1.5",
-  md: "h-11 px-5 text-[15px] gap-2",
-  lg: "h-13 px-7 text-base gap-2",
+  sm: "h-10 px-4 text-sm gap-1.5",
+  md: "h-12 px-6 text-[15px] gap-2",
+  lg: "h-14 px-8 text-base gap-2",
 };
 
 const BASE =
-  "inline-flex items-center justify-center rounded-full font-bold leading-none whitespace-nowrap select-none transition-colors duration-200 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage-600";
+  "press inline-flex items-center justify-center rounded-full font-bold leading-none whitespace-nowrap select-none cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus";
+
+function styleFor(variant: Variant): CSSProperties {
+  const shadow = VARIANTS[variant].shadow;
+  return variant === "ghost"
+    ? {}
+    : ({ "--btn-shadow": `0 4px 0 0 ${shadow}`, "--press-shadow": shadow } as CSSProperties);
+}
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant;
@@ -36,12 +47,14 @@ export function Button({
   className,
   children,
   disabled,
+  style,
   ...rest
 }: ButtonProps) {
   return (
     <button
       type="button"
-      className={cx(BASE, VARIANTS[variant], SIZES[size], className)}
+      className={cx(BASE, VARIANTS[variant].cls, SIZES[size], className)}
+      style={{ ...styleFor(variant), ...style }}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...rest}
@@ -66,13 +79,13 @@ export function ButtonLink({
   children: ReactNode;
 }) {
   return (
-    <Link href={href} className={cx(BASE, VARIANTS[variant], SIZES[size], className)}>
+    <Link href={href} className={cx(BASE, VARIANTS[variant].cls, SIZES[size], className)} style={styleFor(variant)}>
       {children}
     </Link>
   );
 }
 
-/** 圓形圖示按鈕 */
+/** 圓形圖示按鈕（44px 以上的觸控目標） */
 export function IconButton({
   label,
   className,
@@ -85,7 +98,7 @@ export function IconButton({
       aria-label={label}
       title={label}
       className={cx(
-        "inline-flex size-10 items-center justify-center rounded-full text-text-2 transition-colors hover:bg-cream-deep hover:text-text disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage-600",
+        "inline-flex size-11 cursor-pointer items-center justify-center rounded-full border-2 border-line bg-paper text-ink transition-colors hover:bg-cream active:scale-95 disabled:opacity-50 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         className,
       )}
       {...rest}
@@ -100,7 +113,7 @@ export function Spinner({ className }: { className?: string }) {
     <span
       aria-hidden
       className={cx(
-        "inline-block size-4 animate-spin rounded-full border-2 border-current border-t-transparent",
+        "inline-block size-4 animate-spin rounded-full border-[2.5px] border-current border-t-transparent",
         className,
       )}
     />

@@ -11,7 +11,7 @@
 | Step 2 四個主要頁面（示範模式，資料存於瀏覽器 localStorage） | 完成 |
 | Step 3 資料模型與 CRUD（新增／編輯／封存、表單驗證、空狀態與錯誤狀態） | 完成 |
 | Step 4 服用紀錄與庫存交易（勾選／取消、防重複扣庫存、異動紀錄、低庫存計算） | 完成（純函式＋單元測試） |
-| Step 5 串接 Firebase（Auth、Firestore、Security Rules） | 未開始 |
+| Step 5 串接後端（Neon Postgres、登入、依使用者隔離資料） | 未開始 |
 | Step 6 測試與部署 | 未開始 |
 
 示範模式下，第一次開啟會自動載入範例資料；可在「設定」頁重設或清除。
@@ -42,7 +42,7 @@ web/src
 │     ├─ history/              服用歷史（依日期篩選、顯示快照）
 │     └─ settings/             時區、重設／清除示範資料
 ├─ components/
-│  ├─ ui/                      button、card、badge、field、dialog、toast、state、icons、page-header
+│  ├─ ui/                      button、card、badge、field、dialog、toast、state、icons、page-header、decor、tone
 │  ├─ nav/bottom-nav.tsx
 │  ├─ today/plan-item-card.tsx
 │  ├─ supplements/supplement-form.tsx
@@ -57,11 +57,20 @@ web/src
    │  ├─ inventory.ts          每日消耗量、預估剩餘天數、庫存狀態
    │  └─ validation.ts         zod 表單驗證
    └─ store/
-      ├─ repository.ts         資料存取介面（Step 5 換成 Firestore 實作）
+      ├─ repository.ts         資料存取介面（Step 5 換成資料庫實作）
       ├─ local-repository.ts   localStorage 實作
       ├─ mock-data.ts          範例資料（透過 ledger 產生，保證帳目一致）
       └─ store-provider.tsx    React context：載入狀態、資料快照、操作與鎖定
 ```
+
+## 視覺方向
+
+活潑、圓潤、像兒童健康教室的氣質，但資訊層級清楚：
+
+- **字體**：英文與數字用 Fredoka（圓體，class `font-en`），繁體中文用 Huninn 粉圓體。
+- **色彩**：暖白底；每個頁面一個主題色（今日＝天空藍、保健品＝綠、庫存＝橘、紀錄＝紫），黃色是主要操作色，紅色只用在庫存不足等提醒。彩色只做背景、邊框與圖示，文字一律深色以確保對比。token 在 `web/src/app/globals.css`，色調對照在 `web/src/components/ui/tone.ts`。
+- **形狀**：白色厚圓角卡片（24px、2px 邊框、底部實色陰影）、膠囊按鈕有「餅乾」厚底、按下會往下壓；底部導覽是浮動膠囊。
+- **裝飾與動效**：雲朵、色塊、貼紙式英文小標；勾選有彈跳感、清單逐項進場；`prefers-reduced-motion` 時全部關閉。
 
 ## 與規格的差異
 
@@ -70,9 +79,10 @@ web/src
   每次服用各成一個計畫項目，`planItemKey = supplementId|planDate|slot|序號` 作為防重複扣庫存的唯一鍵。
 - **庫存不足仍要記錄**時，庫存照實扣除、允許為負並標示「庫存不足」，讓庫存數量與異動紀錄保持一致。
 - **編輯時改動庫存數字**不直接覆蓋，而是記一筆 `adjustment` 異動。
+- **後端**：規格建議 Firebase，本專案改用 Neon Postgres；資料存取層已抽成介面，領域規則（勾選／取消／補貨放在同一個交易內）不變。
 
 ## 安全原則
 
 - 未確認的服用時段顯示「尚未確認」，系統不推定。
 - 不提供醫療診斷、治療或停藥建議。
-- 資料存取層以介面抽象，正式串接 Firestore 時勾選／取消／補貨需放在 transaction 內。
+- 資料存取層以介面抽象，正式串接資料庫時勾選／取消／補貨需放在交易內。

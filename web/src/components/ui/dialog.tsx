@@ -38,25 +38,25 @@ export function Dialog({
       ref={ref}
       onClose={onClose}
       onClick={(e) => {
-        // 點背景關閉
         if (e.target === e.currentTarget) onClose();
       }}
       className={cx(
-        "m-0 w-full max-w-none bg-transparent p-0 backdrop:bg-ink/40 backdrop:backdrop-blur-[2px]",
-        // 手機：貼底；桌面：置中
-        "fixed inset-x-0 bottom-0 top-auto max-h-[92dvh] sm:inset-0 sm:m-auto sm:max-w-md sm:max-h-[85dvh]",
+        "m-0 w-full max-w-none bg-transparent p-0 backdrop:bg-ink/50 backdrop:backdrop-blur-[2px]",
+        "fixed inset-x-0 bottom-0 top-auto max-h-[92dvh] sm:inset-0 sm:m-auto sm:max-h-[85dvh] sm:max-w-md",
         "open:animate-fade-up",
       )}
     >
       <div
         className={cx(
-          "flex max-h-[92dvh] flex-col rounded-t-[28px] bg-paper shadow-2xl sm:max-h-[85dvh] sm:rounded-[28px]",
+          "flex max-h-[92dvh] flex-col rounded-t-[32px] border-2 border-line bg-white shadow-2xl sm:max-h-[85dvh] sm:rounded-[32px]",
           className,
         )}
       >
-        <div className="flex items-start gap-3 px-5 pt-5 pb-3">
+        {/* 手機抽屜的小把手 */}
+        <div aria-hidden className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-line-strong sm:hidden" />
+        <div className="flex items-start gap-3 px-5 pt-4 pb-3">
           <div className="min-w-0 flex-1">
-            <h2 className="text-lg font-black text-ink">{title}</h2>
+            <h2 className="text-xl font-bold text-ink">{title}</h2>
             {description && <p className="mt-1 text-sm text-text-2">{description}</p>}
           </div>
           <IconButton label="關閉" onClick={onClose} className="-mr-2 -mt-1">

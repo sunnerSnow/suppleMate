@@ -24,6 +24,7 @@ export default function EditSupplementPage() {
   return (
     <div className="animate-fade-up">
       <PageHeader
+        tone="green"
         eyebrow="Edit"
         title={`編輯 ${s.name}`}
         description="改動服用量或時段從現在起生效，過去的服用紀錄會保留當時的快照。"

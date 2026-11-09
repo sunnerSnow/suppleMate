@@ -1,11 +1,13 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cx } from "@/lib/cx";
+import { TONE_BADGE, type Tone } from "./tone";
 
+/** 白色厚圓角卡片，2px 淡邊框＋一點點底部陰影 */
 export function Card({ className, children, ...rest }: HTMLAttributes<HTMLDivElement> & { children: ReactNode }) {
   return (
     <div
       className={cx(
-        "rounded-[var(--radius-card)] border border-line-soft bg-paper p-4 shadow-[var(--shadow-card)]",
+        "rounded-[var(--radius-card)] border-2 border-line bg-white p-4 shadow-[0_3px_0_0_var(--line)]",
         className,
       )}
       {...rest}
@@ -15,17 +17,7 @@ export function Card({ className, children, ...rest }: HTMLAttributes<HTMLDivEle
   );
 }
 
-type Tone = "sage" | "blue" | "orange" | "amber" | "sky" | "neutral";
-
-const TONES: Record<Tone, string> = {
-  sage: "bg-sage-50 text-sage-700",
-  blue: "bg-blue-50 text-blue-600",
-  orange: "bg-orange-50 text-orange-600",
-  amber: "bg-amber-50 text-amber-600",
-  sky: "bg-sky-50 text-sky-600",
-  neutral: "bg-cream-deep text-text-2",
-};
-
+/** 貼紙式徽章：淡色底、深色字。顏色只是輔助，文字本身要能表達意思。 */
 export function Badge({
   tone = "neutral",
   className,
@@ -39,7 +31,7 @@ export function Badge({
     <span
       className={cx(
         "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold leading-none whitespace-nowrap",
-        TONES[tone],
+        TONE_BADGE[tone],
         className,
       )}
     >

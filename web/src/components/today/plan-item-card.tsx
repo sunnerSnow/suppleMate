@@ -3,9 +3,9 @@
 import { Spinner } from "@/components/ui/button";
 import { Badge } from "@/components/ui/card";
 import { Check } from "@/components/ui/icons";
+import { cx } from "@/lib/cx";
 import { formatTime } from "@/lib/date";
 import { formatQuantity } from "@/lib/domain/inventory";
-import { cx } from "@/lib/cx";
 import type { PlanItem } from "@/lib/types";
 
 export function PlanItemCard({
@@ -25,8 +25,10 @@ export function PlanItemCard({
   return (
     <div
       className={cx(
-        "flex items-center gap-3 rounded-[var(--radius-card)] border bg-paper p-3.5 shadow-[var(--shadow-card)] transition-colors",
-        done ? "border-sage-600/30 bg-sage-50/60" : "border-line-soft",
+        "flex items-center gap-3 rounded-[var(--radius-card)] border-2 bg-white p-3 pr-4 transition-colors duration-300",
+        done
+          ? "border-green bg-green-soft shadow-[0_3px_0_0_var(--green)]"
+          : "border-line shadow-[0_3px_0_0_var(--line)]",
       )}
     >
       <button
@@ -37,39 +39,40 @@ export function PlanItemCard({
         disabled={pending}
         onClick={() => onToggle(item)}
         className={cx(
-          "flex size-11 shrink-0 items-center justify-center rounded-full border-2 transition-all",
+          "flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full border-[3px] transition-[background-color,border-color,transform] duration-200",
           done
-            ? "border-sage-600 bg-sage-600 text-white"
-            : "border-line bg-paper text-transparent hover:border-sage-600 active:scale-95",
+            ? "border-green-deep bg-green-deep text-white"
+            : "border-line-ui bg-white text-transparent hover:border-green active:scale-90",
           pending && "opacity-60",
+          "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         )}
       >
-        {pending ? <Spinner className={done ? "text-white" : "text-sage-600"} /> : <Check size={22} />}
+        {pending ? (
+          <Spinner className={done ? "text-white" : "text-green-deep"} />
+        ) : (
+          <Check size={24} className={done ? "animate-pop" : undefined} />
+        )}
       </button>
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <p
-            className={cx(
-              "truncate text-[15px] font-bold",
-              done ? "text-text-2 line-through decoration-sage-600/50" : "text-ink",
-            )}
-          >
+          <p className={cx("truncate text-base font-bold", done ? "text-green-text" : "text-ink")}>
             {item.supplementName}
           </p>
-          {lowStock && <Badge tone="orange">庫存不足</Badge>}
+          {lowStock && <Badge tone="red">庫存不足</Badge>}
         </div>
         <p className="mt-0.5 text-sm text-text-2">
-          <span className="tnum font-bold text-text">
-            {formatQuantity(item.dose)} {item.unit}
-          </span>
+          <span className="font-en tnum text-base font-semibold text-ink">{formatQuantity(item.dose)}</span>
+          <span className="ml-1 font-bold text-ink">{item.unit}</span>
           {item.brand && <span className="ml-2 text-text-3">{item.brand}</span>}
         </p>
         {item.notes && <p className="mt-1 line-clamp-2 text-xs text-text-3">{item.notes}</p>}
       </div>
 
       {done && item.log?.takenAt && (
-        <span className="tnum shrink-0 text-xs font-bold text-sage-700">{formatTime(item.log.takenAt, timezone)}</span>
+        <span className="font-en tnum shrink-0 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-green-text">
+          {formatTime(item.log.takenAt, timezone)}
+        </span>
       )}
     </div>
   );

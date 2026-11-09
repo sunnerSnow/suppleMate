@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge, Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/field";
@@ -32,6 +32,7 @@ export default function HistoryPage() {
   return (
     <div className="animate-fade-up">
       <PageHeader
+        tone="purple"
         eyebrow="History"
         title="服用紀錄"
         description="紀錄保存當時的名稱、用量與單位，之後改設定不會影響這裡。"
@@ -43,7 +44,7 @@ export default function HistoryPage() {
           value={date}
           onChange={(e) => setDate(e.target.value)}
           aria-label="依日期篩選"
-          className="flex-1"
+          className="flex-1 rounded-full"
         />
         {date && (
           <Button variant="ghost" size="sm" onClick={() => setDate("")}>
@@ -57,32 +58,38 @@ export default function HistoryPage() {
 
       {store.status === "ready" && groups.length === 0 && (
         <EmptyState
-          icon={<ClockIcon size={26} />}
+          tone="purple"
+          icon={<ClockIcon size={32} />}
           title={date ? "這一天沒有紀錄" : "還沒有服用紀錄"}
           description={date ? "試試其他日期。" : "到今日頁勾選已服用的項目，紀錄就會出現在這裡。"}
         />
       )}
 
       {store.status === "ready" && groups.length > 0 && (
-        <div className="flex flex-col gap-5">
-          {groups.map(([planDate, logs]) => {
+        <div className="stagger flex flex-col gap-6">
+          {groups.map(([planDate, logs], i) => {
             const taken = logs.filter((l) => l.status === "taken").length;
             const relative = relativeDayLabel(planDate, store.today);
             return (
-              <section key={planDate}>
-                <div className="mb-2 flex items-baseline justify-between px-1">
-                  <h2 className="text-sm font-black text-ink">
-                    {relative && <span className="mr-1.5 text-sage-700">{relative}</span>}
+              <section key={planDate} style={{ "--i": i } as CSSProperties}>
+                <div className="mb-2.5 flex items-baseline justify-between px-1">
+                  <h2 className="flex items-center gap-2 text-[15px] font-bold text-ink">
+                    <span aria-hidden className="inline-block size-3 rounded-full bg-purple" />
+                    {relative && <span className="text-purple-text">{relative}</span>}
                     {formatPlanDate(planDate)}
                   </h2>
-                  <span className="tnum text-xs font-bold text-text-3">已服用 {taken} 項</span>
+                  <span className="tnum text-sm font-bold text-purple-text">已服用 {taken} 項</span>
                 </div>
-                <Card className="divide-y divide-line-soft p-0">
+                <Card className="divide-y-2 divide-cream p-0">
                   {logs.map((l) => (
                     <div key={l.id} className="flex items-center gap-3 px-4 py-3">
+                      <span
+                        aria-hidden
+                        className={`size-2.5 shrink-0 rounded-full ${l.status === "taken" ? "bg-green" : "bg-line-strong"}`}
+                      />
                       <div className="min-w-0 flex-1">
                         <p
-                          className={`truncate text-[15px] font-bold ${
+                          className={`truncate text-base font-bold ${
                             l.status === "reversed" ? "text-text-3 line-through" : "text-ink"
                           }`}
                         >
@@ -97,12 +104,12 @@ export default function HistoryPage() {
                           {l.takenAt && (
                             <>
                               <span className="mx-1.5 text-text-3">·</span>
-                              <span className="tnum">{formatTime(l.takenAt, store.timezone)}</span>
+                              <span className="font-en tnum">{formatTime(l.takenAt, store.timezone)}</span>
                             </>
                           )}
                         </p>
                       </div>
-                      {l.status === "taken" ? <Badge tone="sage">已服用</Badge> : <Badge tone="neutral">已撤銷</Badge>}
+                      {l.status === "taken" ? <Badge tone="green">已服用</Badge> : <Badge tone="neutral">已撤銷</Badge>}
                     </div>
                   ))}
                 </Card>

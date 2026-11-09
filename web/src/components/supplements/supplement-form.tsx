@@ -111,8 +111,8 @@ export function SupplementForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-      <section className="flex flex-col gap-4 rounded-[var(--radius-card)] bg-paper p-4 shadow-[var(--shadow-card)]">
-        <h2 className="text-sm font-black text-ink">基本資料</h2>
+      <section className="flex flex-col gap-4 rounded-[var(--radius-card)] border-2 border-line bg-white p-4 shadow-[0_3px_0_0_var(--line)]">
+        <h2 className="text-sm font-bold text-ink">基本資料</h2>
         <Field label="名稱" htmlFor={`${id}-name`} required error={errors.name}>
           <Input
             id={`${id}-name`}
@@ -159,8 +159,8 @@ export function SupplementForm({
         </div>
       </section>
 
-      <section className="flex flex-col gap-4 rounded-[var(--radius-card)] bg-paper p-4 shadow-[var(--shadow-card)]">
-        <h2 className="text-sm font-black text-ink">服用計畫</h2>
+      <section className="flex flex-col gap-4 rounded-[var(--radius-card)] border-2 border-line bg-white p-4 shadow-[0_3px_0_0_var(--line)]">
+        <h2 className="text-sm font-bold text-ink">服用計畫</h2>
         <p className="-mt-2 text-xs text-text-3">請依產品標示或專業人員建議填寫；還沒確定的時段請保留「尚未確認」。</p>
         <div className="grid grid-cols-2 gap-3">
           <Field label="每次服用量" htmlFor={`${id}-dosePerIntake`} required error={errors.dosePerIntake}>
@@ -220,7 +220,7 @@ export function SupplementForm({
                   id={`${id}-slot-${index}`}
                   value={slot}
                   onChange={(e) => setSlot(index, e.target.value as ScheduleSlot)}
-                  className={slot === "unconfirmed" ? "text-amber-600" : undefined}
+                  className={slot === "unconfirmed" ? "text-orange-text" : undefined}
                 >
                   {SCHEDULE_SLOTS.map((s) => (
                     <option key={s} value={s}>
@@ -234,8 +234,8 @@ export function SupplementForm({
         </div>
       </section>
 
-      <section className="flex flex-col gap-4 rounded-[var(--radius-card)] bg-paper p-4 shadow-[var(--shadow-card)]">
-        <h2 className="text-sm font-black text-ink">庫存</h2>
+      <section className="flex flex-col gap-4 rounded-[var(--radius-card)] border-2 border-line bg-white p-4 shadow-[0_3px_0_0_var(--line)]">
+        <h2 className="text-sm font-bold text-ink">庫存</h2>
         <div className="grid grid-cols-2 gap-3">
           <Field
             label={isEdit ? "目前庫存" : "初始庫存"}
