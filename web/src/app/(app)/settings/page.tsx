@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { logoutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Badge, Card } from "@/components/ui/card";
 import { Dialog } from "@/components/ui/dialog";
 import { Field, Select, SelectWrap } from "@/components/ui/field";
 import { PageHeader } from "@/components/ui/page-header";
@@ -21,15 +22,30 @@ export default function SettingsPage() {
       <PageHeader tone="purple" eyebrow="Settings" title="設定" />
 
       <Card className="mb-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="font-en text-[12px] font-semibold uppercase tracking-[0.14em] text-text-3">Account</p>
+            <p className="mt-1 truncate text-base font-bold text-ink">{store.account.name || "未設定名稱"}</p>
+            <p className="truncate text-sm text-text-2">{store.account.email ?? "—"}</p>
+          </div>
+          <Badge tone="purple">已登入</Badge>
+        </div>
+        <form action={logoutAction} className="mt-4">
+          <Button type="submit" variant="outline" className="w-full">
+            登出
+          </Button>
+        </form>
+      </Card>
+
+      <Card className="mb-4">
         <Field label="時區" htmlFor="tz" hint="用來判斷「今天」是哪一天，以及顯示服用時間。">
           <SelectWrap>
             <Select
               id="tz"
               value={store.timezone}
-              disabled={store.status !== "ready"}
+              disabled={store.status !== "ready" || store.isPending("profile")}
               onChange={async (e) => {
-                await store.updateProfile({ timezone: e.target.value });
-                toast.success("已更新時區");
+                if (await store.updateProfile({ timezone: e.target.value })) toast.success("已更新時區");
               }}
             >
               {TIMEZONES.map((tz) => (
@@ -44,8 +60,8 @@ export default function SettingsPage() {
 
       <Card className="mb-4">
         <h2 className="text-sm font-bold text-ink">資料</h2>
-        <p className="mt-1 text-xs text-text-3">示範模式：資料只存在這個瀏覽器裡，尚未同步到雲端。</p>
-        <div className="mt-4 flex flex-col gap-2">
+        <p className="mt-1 text-xs text-text-3">範例資料方便試用；清除後保健品、服用紀錄與庫存異動都會刪掉。</p>
+        <div className="mt-4 flex flex-col gap-3">
           <Button variant="outline" onClick={() => setConfirm("sample")} disabled={store.status !== "ready"}>
             重設為範例資料
           </Button>
@@ -65,7 +81,7 @@ export default function SettingsPage() {
         title={confirm === "clear" ? "清除全部資料" : "重設為範例資料"}
         description="目前的保健品、服用紀錄與庫存異動都會被移除，無法復原。"
       >
-        <div className="mt-2 flex flex-col gap-2">
+        <div className="mt-2 flex flex-col gap-3">
           <Button
             variant="danger"
             loading={store.isPending("reset")}

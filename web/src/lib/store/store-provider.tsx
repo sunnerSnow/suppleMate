@@ -7,16 +7,20 @@ import { todayPlanDate } from "../date";
 import type { IntakeResult, Result, StockResult } from "../domain/ledger";
 import type { AdjustInput, RestockInput, SupplementInput } from "../domain/validation";
 import type { IntakeLog, InventoryTransaction, Supplement, SupplementStatus, UserProfile } from "../types";
-import { LocalRepository } from "./local-repository";
+import { RemoteRepository } from "./remote-repository";
 import type { Snapshot, SuppleMateRepository, TakeIntakeParams } from "./repository";
 
 export type StoreStatus = "loading" | "ready" | "error";
+
+export type Account = { email: string | null; name: string | null };
 
 export type StoreValue = {
   status: StoreStatus;
   error?: string;
   retry: () => void;
 
+  /** 登入中的帳號（由伺服端 layout 傳入） */
+  account: Account;
   profile: UserProfile | null;
   timezone: string;
   /** 使用者時區的今天 YYYY-MM-DD，跨日時自動更新 */
@@ -35,7 +39,7 @@ export type StoreValue = {
   reverseIntake: (logId: string, pendingKey: string) => Promise<Result<IntakeResult> | null>;
   restock: (supplementId: string, input: RestockInput) => Promise<Result<StockResult> | null>;
   adjustStock: (supplementId: string, input: AdjustInput) => Promise<Result<StockResult> | null>;
-  updateProfile: (patch: Partial<Pick<UserProfile, "displayName" | "timezone">>) => Promise<void>;
+  updateProfile: (patch: Partial<Pick<UserProfile, "displayName" | "timezone">>) => Promise<boolean>;
   resetWithSampleData: () => Promise<void>;
   clearAll: () => Promise<void>;
 };
@@ -43,15 +47,17 @@ export type StoreValue = {
 const StoreContext = createContext<StoreValue | null>(null);
 
 function createDefaultRepository(): SuppleMateRepository {
-  return new LocalRepository(window.localStorage);
+  return new RemoteRepository();
 }
 
 export function StoreProvider({
   children,
+  account,
   repository,
 }: {
   children: ReactNode;
-  /** 測試或日後換 Firestore 時注入；預設用 localStorage */
+  account: Account;
+  /** 測試時注入；預設透過 Server Action 存取資料庫 */
   repository?: SuppleMateRepository;
 }) {
   const toast = useToast();
@@ -68,7 +74,7 @@ export function StoreProvider({
   const [clock, setClock] = useState<number | null>(null);
   const today = clock === null ? "" : todayPlanDate(timezone, new Date(clock));
 
-  // 載入資料（只在瀏覽器執行，localStorage 在伺服器不存在）；狀態重設在 retry() 內做
+  // 載入資料（掛載後呼叫 Server Action）；狀態重設在 retry() 內做
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -139,6 +145,7 @@ export function StoreProvider({
     status,
     error,
     retry,
+    account,
     profile: snapshot?.profile ?? null,
     timezone,
     today,
@@ -227,12 +234,12 @@ export function StoreProvider({
         return r;
       }),
 
-    updateProfile: async (p) => {
-      await withPending("profile", async () => {
+    updateProfile: async (p) =>
+      (await withPending("profile", async () => {
         const profile = await repo().updateProfile(p);
         patch((prev) => ({ ...prev, profile }));
-      });
-    },
+        return true;
+      })) ?? false,
 
     resetWithSampleData: async () => {
       await withPending("reset", async () => {

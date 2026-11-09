@@ -95,6 +95,7 @@ export type InventoryTransaction = {
 
 export type UserProfile = {
   displayName?: string;
+  email?: string;
   /** 預設 Asia/Taipei */
   timezone: string;
   createdAt: string;

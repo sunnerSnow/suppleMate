@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka, Huninn } from "next/font/google";
 import { ToastProvider } from "@/components/ui/toast";
-import { StoreProvider } from "@/lib/store/store-provider";
 import "./globals.css";
 
 // 英文與數字：圓體 Fredoka（可變字重）
@@ -27,9 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="zh-Hant" className={`${fredoka.variable} ${huninn.variable} h-full`}>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <ToastProvider>
-          <StoreProvider>{children}</StoreProvider>
-        </ToastProvider>
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

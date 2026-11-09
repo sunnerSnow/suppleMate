@@ -9,7 +9,7 @@ import { planItemKey } from "./plan";
  */
 
 export type LedgerErrorCode =
-  "ALREADY_TAKEN" | "INSUFFICIENT_STOCK" | "ALREADY_REVERSED" | "ARCHIVED" | "INVALID_QUANTITY";
+  "ALREADY_TAKEN" | "INSUFFICIENT_STOCK" | "ALREADY_REVERSED" | "ARCHIVED" | "INVALID_QUANTITY" | "INVALID_PLAN_ITEM";
 
 export type LedgerError = { code: LedgerErrorCode; message: string };
 
