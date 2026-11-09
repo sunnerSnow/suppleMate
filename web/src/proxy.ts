@@ -16,6 +16,9 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
+// 靜態資源、favicon 與 PWA manifest 不需要登入（manifest 由瀏覽器在加到主畫面時抓，不帶 cookie 也要拿得到）
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

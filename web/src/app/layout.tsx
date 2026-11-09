@@ -18,11 +18,27 @@ const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: { default: "SuppleMate", template: "%s · SuppleMate" },
-  description: "保健品管理助手：每日服用表、庫存與補貨提醒。",
-  applicationName: "SuppleMate",
-};
+async function currentTheme() {
+  const cookieTheme = (await cookies()).get(THEME_COOKIE)?.value;
+  return isTheme(cookieTheme) ? cookieTheme : DEFAULT_THEME;
+}
+
+/** icon 跟著主題：C 繪本粗線／E 旅行雜誌濃彩各一套（public/icons/，由 design/icon-proposals.html 的概念 C 產生） */
+export async function generateMetadata(): Promise<Metadata> {
+  const theme = await currentTheme();
+  return {
+    title: { default: "SuppleMate", template: "%s · SuppleMate" },
+    description: "保健品管理助手：每日服用表、庫存與補貨提醒、小知識與一鍵健檢。",
+    applicationName: "SuppleMate",
+    icons: {
+      icon: [
+        { url: `/icons/icon-${theme}.svg`, type: "image/svg+xml" },
+        { url: `/icons/icon-${theme}-192.png`, sizes: "192x192", type: "image/png" },
+      ],
+      apple: [{ url: `/icons/apple-${theme}.png`, sizes: "180x180", type: "image/png" }],
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -31,8 +47,7 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const cookieTheme = (await cookies()).get(THEME_COOKIE)?.value;
-  const theme = isTheme(cookieTheme) ? cookieTheme : DEFAULT_THEME;
+  const theme = await currentTheme();
   return (
     <html lang="zh-Hant" data-theme={theme} className={`${zenMaru.variable} ${montserrat.variable} h-full`}>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
