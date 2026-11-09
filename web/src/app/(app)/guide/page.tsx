@@ -77,6 +77,16 @@ export default function GuidePage() {
       </div>
       <Wave />
 
+      <div className="mx-5 mt-5">
+        <Link href="/checkup" className="kcard block no-underline">
+          <span className="corner">
+            <Badge tone="info">NEW</Badge>
+          </span>
+          <b>一鍵健檢 →</b>
+          <p className="m-0">看看目前的組合有沒有重複、要分開、時段不合，或依你的目標建議增加什麼。</p>
+        </Link>
+      </div>
+
       {store.status === "loading" && (
         <div className="mt-5">
           <ListSkeleton />

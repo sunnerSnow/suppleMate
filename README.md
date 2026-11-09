@@ -16,6 +16,7 @@
 | Step 5 後端：Neon Postgres＋Better Auth 登入＋RLS 依使用者隔離 | 完成（已接上 Neon） |
 | 第二階段：保健品小知識＋建議方案（內建資料＋AI 補充） | 完成 |
 | 介面主題：C 繪本粗線／E 旅行雜誌濃彩，使用者可切換 | 完成 |
+| 一鍵健檢：內建規則＋AI 深度分析（建議調整／可以考慮不用／建議增加／注意） | 完成 |
 | Step 6 部署到 Vercel | 完成：https://supple-mate.vercel.app |
 
 ## 快速開始（本機示範模式，不需要資料庫）
@@ -86,11 +87,11 @@ web/
 │  ├─ actions.ts              Server Actions：登入／登出、資料操作（每個都自己檢查 session）
 │  ├─ login/                  登入／註冊頁（本機示範模式可一鍵登入）
 │  └─ (app)/                  登入後的頁面群：layout 內 requireUser → StoreProvider → 底部導覽
-│     ├─ today/ supplements/ inventory/ history/ settings/
+│     ├─ today/ supplements/ inventory/ history/ guide/ checkup/ settings/
 ├─ src/components/            ui（button、card、field、dialog、toast、state、decor、tone…）、nav、today、supplements、inventory
 ├─ src/lib/
 │  ├─ types.ts constants.ts date.ts theme.ts
-│  ├─ knowledge/              內建小知識、名稱比對、建議方案（純函式）、AI 提示
+│  ├─ knowledge/              內建小知識、名稱比對、建議方案與健檢規則（純函式）、AI 提示與報告結構
 │  ├─ ai/                     provider 介面、Gemini／mock、結構化輸出驗證
 │  ├─ domain/                 ledger（勾選／取消／補貨／調整的純函式）、plan、inventory、validation
 │  ├─ db/                     client（Neon／PGlite）、schema、auth-schema、with-user（RLS）、local
@@ -115,6 +116,14 @@ web/
 - 內建沒有的，使用者可按「請 AI 整理」：Gemini 結構化輸出（`AI_PROVIDER=gemini`；預設 `mock` 回示範內容），zod 驗證後存進共用快取 `sm.knowledge`，之後任何人查同名都直接用。每人每小時、全站每日有次數上限。
 - 新增／編輯保健品時輸入名稱即顯示小知識與「套用為 ○○」；詳細頁可套用建議時段；「方案」頁排出一天的時段總覽、建議補上的時段、搭配提醒（要分開／可一起）與各項小知識。
 - 原則：系統只顯示建議，使用者按「套用」才會寫進計畫；全部標示「一般資訊，非醫療建議」。
+
+## 一鍵健檢
+
+「方案」頁進入 `/checkup`。先填選填的個人資料（保健目標多選、年齡區間、性別，存在 `sm.profiles`；只用來套用一般人口的常見差異，不收病史），按「開始健檢」：
+
+- **內建規則**（`web/src/lib/knowledge/checkup.ts`，純函式、前端立刻算）：同成分兩項（可以考慮不用）、綜合維他命與單方重疊（注意總量）、小知識說要分開卻排同時段（優先調整）、時段尚未確認／隨餐空腹不合（可一鍵套用建議時段）、同一時段 5 項以上、常見搭配還沒有（例如鈣→維生素 D）、勾選的目標沒有對應保健品（列常見選擇）、年齡性別的常見提醒（男性或年長者補鐵先確認、65 歲以上常見補充、45 歲以上女性鈣與 D、未成年以專業建議為準）。
+- **AI 深度分析**（`web/src/lib/services/checkup.ts`）：把清單、個人資料與規則發現交給 Gemini，產生結構化報告（overview、add、remove、adjust、cautions、askProfessional）；remove／adjust 只保留清單裡的名稱。報告存在 `sm.checkups`（每人一份，RLS），以輸入雜湊判斷是否過期，同樣的資料不重複分析；與小知識共用每人每小時、全站每日的 AI 額度。
+- 「建議增加」的項目可一鍵帶到新增頁（`/supplements/new?name=`）預填名稱；套用時段、新增都要使用者按下，系統不會自動改資料。
 
 ## 與規格的差異
 

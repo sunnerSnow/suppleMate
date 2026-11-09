@@ -27,9 +27,9 @@ type FormState = {
   notes: string;
 };
 
-function fromSupplement(s?: Supplement): FormState {
+function fromSupplement(s?: Supplement, initialName = ""): FormState {
   return {
-    name: s?.name ?? "",
+    name: s?.name ?? initialName,
     brand: s?.brand ?? "",
     productForm: s?.productForm ?? "",
     servingSize: s?.servingSize ?? "",
@@ -65,12 +65,15 @@ function toInput(f: FormState): unknown {
 
 export function SupplementForm({
   initial,
+  initialName,
   submitting,
   submitLabel,
   onSubmit,
   onCancel,
 }: {
   initial?: Supplement;
+  /** 新增時預填的名稱（健檢頁「新增 ○○」帶過來） */
+  initialName?: string;
   submitting: boolean;
   submitLabel: string;
   onSubmit: (input: SupplementInput) => void | Promise<void>;
@@ -78,7 +81,7 @@ export function SupplementForm({
 }) {
   const id = useId();
   const toast = useToast();
-  const [form, setForm] = useState<FormState>(() => fromSupplement(initial));
+  const [form, setForm] = useState<FormState>(() => fromSupplement(initial, initialName));
   const [errors, setErrors] = useState<FieldErrors>({});
   const isEdit = Boolean(initial);
   const knowledge = useKnowledge(form.name);

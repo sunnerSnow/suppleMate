@@ -6,7 +6,14 @@ import { DEFAULT_TIMEZONE } from "../constants";
 import { todayPlanDate } from "../date";
 import type { IntakeResult, Result, StockResult } from "../domain/ledger";
 import type { AdjustInput, RestockInput, SupplementInput } from "../domain/validation";
-import type { IntakeLog, InventoryTransaction, Supplement, SupplementStatus, UserProfile } from "../types";
+import type {
+  IntakeLog,
+  InventoryTransaction,
+  ProfilePatch,
+  Supplement,
+  SupplementStatus,
+  UserProfile,
+} from "../types";
 import { RemoteRepository } from "./remote-repository";
 import type { Snapshot, SuppleMateRepository, TakeIntakeParams } from "./repository";
 
@@ -39,7 +46,7 @@ export type StoreValue = {
   reverseIntake: (logId: string, pendingKey: string) => Promise<Result<IntakeResult> | null>;
   restock: (supplementId: string, input: RestockInput) => Promise<Result<StockResult> | null>;
   adjustStock: (supplementId: string, input: AdjustInput) => Promise<Result<StockResult> | null>;
-  updateProfile: (patch: Partial<Pick<UserProfile, "displayName" | "timezone" | "theme">>) => Promise<boolean>;
+  updateProfile: (patch: ProfilePatch) => Promise<boolean>;
   resetWithSampleData: () => Promise<void>;
   clearAll: () => Promise<void>;
 };

@@ -3,6 +3,7 @@ import type { AdjustInput, RestockInput, SupplementInput } from "../domain/valid
 import type {
   IntakeLog,
   InventoryTransaction,
+  ProfilePatch,
   ScheduleSlot,
   Supplement,
   SupplementStatus,
@@ -46,7 +47,7 @@ export interface SuppleMateRepository {
   restock(supplementId: string, input: RestockInput): Promise<Result<StockResult>>;
   adjustStock(supplementId: string, input: AdjustInput): Promise<Result<StockResult>>;
 
-  updateProfile(patch: Partial<Pick<UserProfile, "displayName" | "timezone" | "theme">>): Promise<UserProfile>;
+  updateProfile(patch: ProfilePatch): Promise<UserProfile>;
 
   /** 清除資料並載入範例資料（示範模式用） */
   resetWithSampleData(): Promise<Snapshot>;

@@ -97,14 +97,46 @@ export type InventoryTransaction = {
 export const THEMES = ["c", "e"] as const;
 export type Theme = (typeof THEMES)[number];
 
+/** 健檢用的保健目標（多選）；只用來提示常見選擇，不是診斷 */
+export const HEALTH_GOALS = [
+  "sleep",
+  "immunity",
+  "joints",
+  "energy",
+  "eyes",
+  "gut",
+  "heart",
+  "bone",
+  "skin",
+  "brain",
+  "stress",
+  "vegetarian",
+] as const;
+export type HealthGoal = (typeof HEALTH_GOALS)[number];
+
+/** 年齡區間與性別皆選填，只用來套用一般人口的常見差異，不存其他健康敏感資料 */
+export const AGE_RANGES = ["under_18", "18_29", "30_44", "45_64", "65_plus"] as const;
+export type AgeRange = (typeof AGE_RANGES)[number];
+export const SEXES = ["female", "male", "other"] as const;
+export type Sex = (typeof SEXES)[number];
+
 export type UserProfile = {
   displayName?: string;
   email?: string;
   theme: Theme;
   /** 預設 Asia/Taipei */
   timezone: string;
+  healthGoals: HealthGoal[];
+  ageRange?: AgeRange;
+  sex?: Sex;
   createdAt: string;
   updatedAt: string;
+};
+
+/** 個人設定的部分更新；ageRange／sex 給 null 表示清除 */
+export type ProfilePatch = Partial<Pick<UserProfile, "displayName" | "timezone" | "theme" | "healthGoals">> & {
+  ageRange?: AgeRange | null;
+  sex?: Sex | null;
 };
 
 /** 今日頁的一個待勾選項目（由保健品的 scheduleSlots 展開而來） */

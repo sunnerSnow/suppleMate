@@ -10,7 +10,9 @@ import { isLocalMode } from "@/lib/config";
 import { getDb } from "@/lib/db/client";
 import type { IntakeResult, Result, StockResult } from "@/lib/domain/ledger";
 import { AppError, unauthorized, type FieldIssue } from "@/lib/errors";
+import type { CheckupReportEntry } from "@/lib/knowledge/checkup-report";
 import type { KnowledgeEntry } from "@/lib/knowledge/types";
+import { getCheckup, runCheckup } from "@/lib/services/checkup";
 import { generateKnowledge, lookupKnowledge, lookupMany } from "@/lib/services/knowledge";
 import { adjustStockDb, restockDb, reverseIntakeDb, takeIntakeDb } from "@/lib/services/ledger";
 import { updateProfile } from "@/lib/services/profiles";
@@ -141,6 +143,18 @@ export async function lookupKnowledgeManyAction(
 
 export async function generateKnowledgeAction(name: string): Promise<ActionResult<KnowledgeEntry>> {
   return run(async (userId) => generateKnowledge(await getDb(), userId, name));
+}
+
+// ---------------------------------------------------------------------------
+// 一鍵健檢：內建規則在前端算；這兩個只負責 AI 深度分析的報告（讀快取／產生）
+// ---------------------------------------------------------------------------
+
+export async function getCheckupAction(): Promise<ActionResult<CheckupReportEntry | null>> {
+  return run(async (userId) => getCheckup(await getDb(), userId));
+}
+
+export async function runCheckupAction(): Promise<ActionResult<CheckupReportEntry>> {
+  return run(async (userId) => runCheckup(await getDb(), userId));
 }
 
 export async function resetSampleDataAction(): Promise<ActionResult<Snapshot>> {

@@ -83,9 +83,15 @@ export type KnowledgeEntry = KnowledgeContent & {
 
 /** 給 provider 的 JSON Schema（去掉 $schema；nullable 的 anyOf 改成 type 陣列；去掉 maxItems） */
 export function knowledgeJsonSchema(): Record<string, unknown> {
-  const out = simplifyNullable(
-    dropKey(z.toJSONSchema(knowledgeEntrySchema, { target: "draft-2020-12" }), "maxItems"),
-  ) as Record<string, unknown>;
+  return providerJsonSchema(knowledgeEntrySchema);
+}
+
+/** 任何 zod 物件 → provider 接受的 JSON Schema 子集（小知識卡與健檢報告共用） */
+export function providerJsonSchema(schema: z.ZodType): Record<string, unknown> {
+  const out = simplifyNullable(dropKey(z.toJSONSchema(schema, { target: "draft-2020-12" }), "maxItems")) as Record<
+    string,
+    unknown
+  >;
   delete out.$schema;
   return out;
 }

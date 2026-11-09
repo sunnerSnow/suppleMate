@@ -13,7 +13,7 @@ import {
   type ActionResult,
 } from "@/app/actions";
 import type { AdjustInput, RestockInput, SupplementInput } from "@/lib/domain/validation";
-import type { SupplementStatus, UserProfile } from "@/lib/types";
+import type { ProfilePatch, SupplementStatus } from "@/lib/types";
 import type { Snapshot, SuppleMateRepository, TakeIntakeParams } from "./repository";
 
 /** Server Action 回傳的錯誤 → 丟給 StoreProvider 顯示；未登入則導回登入頁 */
@@ -66,7 +66,7 @@ export class RemoteRepository implements SuppleMateRepository {
   async adjustStock(supplementId: string, input: AdjustInput) {
     return unwrap(await adjustStockAction(supplementId, input));
   }
-  async updateProfile(patch: Partial<Pick<UserProfile, "displayName" | "timezone" | "theme">>) {
+  async updateProfile(patch: ProfilePatch) {
     return unwrap(await updateProfileAction(patch));
   }
   async resetWithSampleData() {

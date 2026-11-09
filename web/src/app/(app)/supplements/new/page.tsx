@@ -1,16 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { SupplementForm } from "@/components/supplements/supplement-form";
 import { AppTop, PageHeader } from "@/components/ui/page-header";
 import { useToast } from "@/components/ui/toast";
 import { useStore } from "@/lib/store/store-provider";
 
 export default function NewSupplementPage() {
-  const store = useStore();
-  const toast = useToast();
-  const router = useRouter();
-
   return (
     <div className="animate-fade-up">
       <AppTop />
@@ -20,19 +17,34 @@ export default function NewSupplementPage() {
         description="輸入名稱後會顯示常見的服用時機，按「套用」才會寫進時段。"
       />
       <div className="px-5">
-        <SupplementForm
-          submitting={store.isPending("supplement:create")}
-          submitLabel="新增保健品"
-          onCancel={() => router.back()}
-          onSubmit={async (input) => {
-            const created = await store.createSupplement(input);
-            if (created) {
-              toast.success(`已新增 ${created.name}`);
-              router.replace("/supplements");
-            }
-          }}
-        />
+        <Suspense fallback={null}>
+          <NewSupplementForm />
+        </Suspense>
       </div>
     </div>
+  );
+}
+
+/** 健檢頁的「新增 ○○」會帶 ?name= 預填名稱；useSearchParams 需要 Suspense 邊界 */
+function NewSupplementForm() {
+  const store = useStore();
+  const toast = useToast();
+  const router = useRouter();
+  const initialName = useSearchParams().get("name")?.trim().slice(0, 60) ?? "";
+
+  return (
+    <SupplementForm
+      initialName={initialName}
+      submitting={store.isPending("supplement:create")}
+      submitLabel="新增保健品"
+      onCancel={() => router.back()}
+      onSubmit={async (input) => {
+        const created = await store.createSupplement(input);
+        if (created) {
+          toast.success(`已新增 ${created.name}`);
+          router.replace("/supplements");
+        }
+      }}
+    />
   );
 }

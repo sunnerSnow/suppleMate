@@ -1,6 +1,35 @@
-import type { ProductForm, ScheduleSlot, StockStatus } from "./types";
+import type { AgeRange, HealthGoal, ProductForm, ScheduleSlot, Sex, StockStatus } from "./types";
 
 export const DEFAULT_TIMEZONE = "Asia/Taipei";
+
+export const HEALTH_GOAL_LABELS: Record<HealthGoal, string> = {
+  sleep: "睡眠",
+  immunity: "免疫",
+  joints: "關節",
+  energy: "體力精神",
+  eyes: "護眼",
+  gut: "腸道",
+  heart: "心血管",
+  bone: "骨骼",
+  skin: "皮膚美容",
+  brain: "記憶專注",
+  stress: "壓力放鬆",
+  vegetarian: "素食",
+};
+
+export const AGE_RANGE_LABELS: Record<AgeRange, string> = {
+  under_18: "18 歲以下",
+  "18_29": "18–29 歲",
+  "30_44": "30–44 歲",
+  "45_64": "45–64 歲",
+  "65_plus": "65 歲以上",
+};
+
+export const SEX_LABELS: Record<Sex, string> = {
+  female: "女性",
+  male: "男性",
+  other: "其他／不方便說",
+};
 
 export const SLOT_LABELS: Record<ScheduleSlot, string> = {
   before_breakfast: "早餐前",

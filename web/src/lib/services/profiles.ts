@@ -6,7 +6,7 @@ import { users } from "@/lib/db/auth-schema";
 import { withService, withUser, type Tx } from "@/lib/db/with-user";
 import { issuesFromZod, validationFailed } from "@/lib/errors";
 import { iso } from "@/lib/services/mappers";
-import { THEMES, type UserProfile } from "@/lib/types";
+import { AGE_RANGES, HEALTH_GOALS, SEXES, THEMES, type UserProfile } from "@/lib/types";
 
 /** 第一次登入時建立 profile（以伺服器身分：此時還沒有可用的 RLS 身分）；顯示名稱預設用註冊時的名字 */
 export async function ensureProfile(
@@ -51,13 +51,20 @@ const profileInput = z.object({
   displayName: z.string().trim().max(60, "顯示名稱最多 60 個字").optional(),
   timezone: z.string().trim().min(1).max(64, "時區太長").refine(isValidTimezone, "不支援的時區").optional(),
   theme: z.enum(THEMES).optional(),
+  healthGoals: z
+    .array(z.enum(HEALTH_GOALS, "不支援的保健目標"))
+    .max(HEALTH_GOALS.length)
+    .transform((goals) => HEALTH_GOALS.filter((g) => goals.includes(g)))
+    .optional(),
+  ageRange: z.enum(AGE_RANGES, "不支援的年齡區間").nullable().optional(),
+  sex: z.enum(SEXES, "不支援的性別選項").nullable().optional(),
 });
 export type ProfileInput = z.input<typeof profileInput>;
 
 export async function updateProfile(db: Db, userId: string, input: unknown): Promise<UserProfile> {
   const parsed = profileInput.safeParse(input);
   if (!parsed.success) throw validationFailed(issuesFromZod(parsed.error));
-  const { displayName, timezone, theme } = parsed.data;
+  const { displayName, timezone, theme, healthGoals, ageRange, sex } = parsed.data;
   const [row] = await withUser(db, userId, (tx) =>
     tx
       .update(profiles)
@@ -65,6 +72,9 @@ export async function updateProfile(db: Db, userId: string, input: unknown): Pro
         ...(displayName !== undefined ? { displayName: displayName || null } : {}),
         ...(timezone !== undefined ? { timezone } : {}),
         ...(theme !== undefined ? { theme } : {}),
+        ...(healthGoals !== undefined ? { healthGoals } : {}),
+        ...(ageRange !== undefined ? { ageRange } : {}),
+        ...(sex !== undefined ? { sex } : {}),
       })
       .where(eq(profiles.id, userId))
       .returning(),
@@ -88,6 +98,9 @@ function toProfile(row: typeof profiles.$inferSelect): UserProfile {
     email: row.email ?? undefined,
     theme: row.theme,
     timezone: row.timezone,
+    healthGoals: row.healthGoals ?? [],
+    ageRange: row.ageRange ?? undefined,
+    sex: row.sex ?? undefined,
     createdAt: iso(row.createdAt),
     updatedAt: iso(row.updatedAt),
   };

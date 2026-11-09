@@ -1,4 +1,5 @@
 import type { AiProvider, StructuredRequest, StructuredResult } from "@/lib/ai/provider";
+import type { CheckupReport } from "@/lib/knowledge/checkup-report";
 import type { KnowledgeContent } from "@/lib/knowledge/types";
 
 /**
@@ -14,8 +15,11 @@ export function createMockProvider(options: { delayMs?: number } = {}): AiProvid
     async generateStructured(request: StructuredRequest): Promise<StructuredResult> {
       if (delayMs > 0) await new Promise((r) => setTimeout(r, delayMs));
       const topic = (request.hint ?? "").trim() || "未命名保健品";
+      // 依要求的 schema 決定回哪一種示範內容：健檢報告有 overview 欄位，小知識卡沒有
+      const props = (request.jsonSchema as { properties?: Record<string, unknown> }).properties ?? {};
+      const payload = "overview" in props ? mockCheckup() : mockKnowledge(topic);
       return {
-        text: JSON.stringify(mockKnowledge(topic)),
+        text: JSON.stringify(payload),
         model: "mock-template",
         inputTokens: null,
         outputTokens: null,
@@ -40,5 +44,17 @@ export function mockKnowledge(topic: string): KnowledgeContent {
     cautions: ["實際服用方式請依產品標示或專業人員建議。"],
     separateFrom: [],
     pairsWith: [],
+  };
+}
+
+export function mockCheckup(): CheckupReport {
+  return {
+    overview:
+      "示範報告：目前使用 mock provider，這段文字是佔位範本，不是 AI 依你的清單分析的結果。設定 AI_PROVIDER=gemini 與 GEMINI_API_KEY 後重新分析。",
+    add: [],
+    remove: [],
+    adjust: [],
+    cautions: ["這是示範內容，用來確認健檢的流程、快取與畫面都能運作。"],
+    askProfessional: ["實際是否需要調整，請與醫師、藥師或營養師討論。"],
   };
 }

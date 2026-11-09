@@ -1,6 +1,6 @@
 import { date, integer, jsonb, numeric, pgSchema, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { authSchema } from "@/lib/db/auth-schema";
-import { PRODUCT_FORMS, SCHEDULE_SLOTS } from "@/lib/types";
+import { AGE_RANGES, HEALTH_GOALS, PRODUCT_FORMS, SCHEDULE_SLOTS, SEXES } from "@/lib/types";
 
 /**
  * 與 db/migrations/20261109000100_init.sql 對應的 Drizzle schema（帳號表在 auth-schema.ts）。
@@ -20,6 +20,21 @@ export const profiles = sm.table("profiles", {
   theme: text("theme", { enum: ["c", "e"] })
     .notNull()
     .default("c"),
+  healthGoals: text("health_goals", { enum: HEALTH_GOALS }).array().notNull().default([]),
+  ageRange: text("age_range", { enum: AGE_RANGES }),
+  sex: text("sex", { enum: SEXES }),
+  createdAt: ts("created_at").notNull().defaultNow(),
+  updatedAt: ts("updated_at").notNull().defaultNow(),
+});
+
+/** AI 健檢報告（每位使用者一份；input_hash 不等於目前資料的雜湊就是過期） */
+export const checkups = sm.table("checkups", {
+  userId: uuid("user_id").primaryKey(),
+  inputHash: text("input_hash").notNull(),
+  report: jsonb("report").notNull(),
+  source: text("source", { enum: ["ai", "mock"] }).notNull(),
+  model: text("model"),
+  promptVersion: text("prompt_version").notNull(),
   createdAt: ts("created_at").notNull().defaultNow(),
   updatedAt: ts("updated_at").notNull().defaultNow(),
 });
@@ -86,4 +101,4 @@ export const knowledge = sm.table("knowledge", {
   updatedAt: ts("updated_at").notNull().defaultNow(),
 });
 
-export const schema = { ...authSchema, profiles, supplements, intakeLogs, inventoryTransactions, knowledge };
+export const schema = { ...authSchema, profiles, supplements, intakeLogs, inventoryTransactions, knowledge, checkups };
