@@ -46,8 +46,8 @@
   --r-card-2: 22px 0 22px 0;
   --r-chip: 100vmax;
   --r-input: 12px;
-  --font-body: var(--font-huninn), "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-en: var(--font-zen-maru), var(--font-huninn), sans-serif;
+  --font-body: "Huninn", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-en: var(--font-zen-maru), "Huninn", sans-serif;
   --ls: 0.06em;
   --body-weight: 700;
   --head-weight: 900;
@@ -90,8 +90,8 @@
   --r-card-2: 10px;
   --r-chip: 5px;
   --r-input: 8px;
-  --font-body: var(--font-noto-tc), "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-en: var(--font-montserrat), var(--font-noto-tc), sans-serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-en: var(--font-montserrat), "Noto Sans TC", sans-serif;
   --ls: 0.04em;
   --body-weight: 700;
   --head-weight: 900;

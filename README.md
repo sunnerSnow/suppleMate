@@ -16,7 +16,7 @@
 | Step 5 後端：Neon Postgres＋Better Auth 登入＋RLS 依使用者隔離 | 完成（已接上 Neon） |
 | 第二階段：保健品小知識＋建議方案（內建資料＋AI 補充） | 完成 |
 | 介面主題：C 繪本粗線／E 旅行雜誌濃彩，使用者可切換 | 完成 |
-| Step 6 部署到 Vercel | 未開始 |
+| Step 6 部署到 Vercel | 完成：https://supple-mate.vercel.app |
 
 ## 快速開始（本機示範模式，不需要資料庫）
 
@@ -55,6 +55,16 @@ npm run dev        # http://localhost:3000
 
 正式環境（`NODE_ENV=production`）沒設 `DATABASE_URL` 會直接報錯，不會默默改用本機資料庫。Neon 免費方案的 compute 閒置會休眠，第一個請求多約半秒到一秒；pooled 連線是 PgBouncer transaction mode，程式已關閉 prepared statements，`withUser` 的 `set local role` 與 `set_config(..., true)` 都在交易內。
 
+## 部署到 Vercel
+
+正式站：https://supple-mate.vercel.app（Vercel 專案 `supple-mate`，連到 GitHub 的 `main`，push 就會自動建置部署）。
+
+- 專案設定：**Root Directory = `web`**，Framework = Next.js；`web/vercel.json` 把函式固定在新加坡 `sin1`（與 Neon 同區）。
+- 環境變數（Production）：`DATABASE_URL`（pooled）、`BETTER_AUTH_SECRET`、`BETTER_AUTH_URL=https://supple-mate.vercel.app`（網站自己的網址，不是 Neon 後台的 Neon Auth 網址）；要開 AI 小知識再加 `AI_PROVIDER=gemini` 與 `GEMINI_API_KEY`。**不要**設 `SM_LOCAL_MODE`。
+- 新增 migration 後要先手動 `npm run db:migrate` 再 push，部署流程不會自動跑 migration。
+- 繁中字型（Huninn、Noto Sans TC）不用 `next/font/google`，改為自架分片（`web/src/app/fonts/`，由 `scripts/subset-font.py` 產生）：Vercel 建置時向 Google 下載幾百個字型分片偶爾會失敗，整個 build 會跟著失敗；自架後建置不依賴外部網路。英數字型（Zen Maru Gothic、Montserrat）體積小，仍走 `next/font/google`。
+- 本機用 CLI 操作：`cd web && npx vercel login`，之後 `npx vercel env ls`、`npx vercel inspect <部署網址> --logs` 可看環境變數與建置紀錄（`.vercel/` 已在 .gitignore）。
+
 ### 登入與資料隔離
 
 - Email＋密碼（Better Auth），使用者、session、帳號表在 Postgres 的 `auth` schema，id 是 uuid；`sm.profiles.id` 直接引用。
@@ -69,8 +79,10 @@ npm run dev        # http://localhost:3000
 web/
 ├─ db/migrations/             可重複執行的 SQL（auth schema → sm schema）
 ├─ scripts/migrate.ts         對 Neon 跑 migration 並驗證權限／RLS
+├─ scripts/subset-font.py     把繁中字型切成自架的 woff2 分片（產生 src/app/fonts/）
 ├─ src/app/
-│  ├─ layout.tsx              字型、ToastProvider
+│  ├─ layout.tsx              字型（英數 next/font、繁中自架）、ToastProvider
+│  ├─ fonts/                  Huninn、Noto Sans TC 的分片與 @font-face（OFL 授權）
 │  ├─ actions.ts              Server Actions：登入／登出、資料操作（每個都自己檢查 session）
 │  ├─ login/                  登入／註冊頁（本機示範模式可一鍵登入）
 │  └─ (app)/                  登入後的頁面群：layout 內 requireUser → StoreProvider → 底部導覽
