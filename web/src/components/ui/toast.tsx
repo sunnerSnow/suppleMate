@@ -13,12 +13,6 @@ type ToastApi = {
 
 const ToastContext = createContext<ToastApi | null>(null);
 
-const STYLES: Record<ToastKind, string> = {
-  success: "border-green bg-green-soft text-green-text",
-  error: "border-red bg-red-soft text-red-text",
-  info: "border-sky bg-sky-soft text-sky-text",
-};
-
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const seq = useRef(0);
@@ -30,11 +24,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const api = useMemo<ToastApi>(
-    () => ({
-      success: (m) => push("success", m),
-      error: (m) => push("error", m),
-      info: (m) => push("info", m),
-    }),
+    () => ({ success: (m) => push("success", m), error: (m) => push("error", m), info: (m) => push("info", m) }),
     [push],
   );
 
@@ -49,7 +39,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={t.id}
             role={t.kind === "error" ? "alert" : "status"}
-            className={`animate-pop pointer-events-auto w-full max-w-md rounded-full border-2 px-5 py-3 text-center text-sm font-bold shadow-[0_3px_0_0_var(--line)] ${STYLES[t.kind]}`}
+            className={`toast ${t.kind} animate-fade-up pointer-events-auto w-full max-w-md`}
           >
             {t.message}
           </div>

@@ -39,7 +39,7 @@ export type StoreValue = {
   reverseIntake: (logId: string, pendingKey: string) => Promise<Result<IntakeResult> | null>;
   restock: (supplementId: string, input: RestockInput) => Promise<Result<StockResult> | null>;
   adjustStock: (supplementId: string, input: AdjustInput) => Promise<Result<StockResult> | null>;
-  updateProfile: (patch: Partial<Pick<UserProfile, "displayName" | "timezone">>) => Promise<boolean>;
+  updateProfile: (patch: Partial<Pick<UserProfile, "displayName" | "timezone" | "theme">>) => Promise<boolean>;
   resetWithSampleData: () => Promise<void>;
   clearAll: () => Promise<void>;
 };

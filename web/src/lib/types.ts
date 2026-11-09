@@ -93,9 +93,14 @@ export type InventoryTransaction = {
   createdAt: string;
 };
 
+/** 介面主題：c＝繪本粗線、e＝旅行雜誌濃彩 */
+export const THEMES = ["c", "e"] as const;
+export type Theme = (typeof THEMES)[number];
+
 export type UserProfile = {
   displayName?: string;
   email?: string;
+  theme: Theme;
   /** 預設 Asia/Taipei */
   timezone: string;
   createdAt: string;

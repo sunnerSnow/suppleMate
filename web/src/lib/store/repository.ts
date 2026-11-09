@@ -46,7 +46,7 @@ export interface SuppleMateRepository {
   restock(supplementId: string, input: RestockInput): Promise<Result<StockResult>>;
   adjustStock(supplementId: string, input: AdjustInput): Promise<Result<StockResult>>;
 
-  updateProfile(patch: Partial<Pick<UserProfile, "displayName" | "timezone">>): Promise<UserProfile>;
+  updateProfile(patch: Partial<Pick<UserProfile, "displayName" | "timezone" | "theme">>): Promise<UserProfile>;
 
   /** 清除資料並載入範例資料（示範模式用） */
   resetWithSampleData(): Promise<Snapshot>;

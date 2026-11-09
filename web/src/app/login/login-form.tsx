@@ -4,7 +4,6 @@ import { useId, useState, useTransition, type FormEvent } from "react";
 import { loginAction, type AuthState } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";
-import { cx } from "@/lib/cx";
 import { credentialsSchema } from "@/lib/validation/auth";
 
 export function LoginForm() {
@@ -36,7 +35,7 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="mt-4 flex flex-col gap-4">
-      <div role="tablist" aria-label="登入或註冊" className="flex rounded-full border-2 border-line bg-cream p-1">
+      <div role="tablist" aria-label="登入或註冊" className="flex gap-2">
         {(["signin", "signup"] as const).map((v) => (
           <button
             key={v}
@@ -47,10 +46,7 @@ export function LoginForm() {
               setIntent(v);
               setState({});
             }}
-            className={cx(
-              "flex-1 cursor-pointer rounded-full py-2 text-sm font-bold transition-colors",
-              intent === v ? "bg-ink text-white" : "text-text-2 hover:text-ink",
-            )}
+            className={`chip flex-1 justify-center ${intent === v ? "on" : ""}`}
           >
             {v === "signin" ? "登入" : "註冊"}
           </button>
@@ -58,10 +54,7 @@ export function LoginForm() {
       </div>
 
       {state.error && (
-        <p
-          role="alert"
-          className="rounded-[var(--radius-chip)] border-2 border-red bg-red-soft px-3 py-2 text-sm font-bold text-red-text"
-        >
+        <p role="alert" className="error-text m-0 text-sm">
           {state.error}
         </p>
       )}
@@ -92,7 +85,7 @@ export function LoginForm() {
           invalid={Boolean(fieldError("password"))}
         />
       </Field>
-      <Button type="submit" size="lg" className="mt-1 w-full" loading={pending}>
+      <Button type="submit" size="lg" block loading={pending}>
         {intent === "signup" ? "建立帳號" : "登入"}
       </Button>
     </form>

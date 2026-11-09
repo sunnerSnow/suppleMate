@@ -66,7 +66,7 @@ export class RemoteRepository implements SuppleMateRepository {
   async adjustStock(supplementId: string, input: AdjustInput) {
     return unwrap(await adjustStockAction(supplementId, input));
   }
-  async updateProfile(patch: Partial<Pick<UserProfile, "displayName" | "timezone">>) {
+  async updateProfile(patch: Partial<Pick<UserProfile, "displayName" | "timezone" | "theme">>) {
     return unwrap(await updateProfileAction(patch));
   }
   async resetWithSampleData() {

@@ -1,4 +1,4 @@
-import { date, integer, numeric, pgSchema, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { date, integer, jsonb, numeric, pgSchema, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { authSchema } from "@/lib/db/auth-schema";
 import { PRODUCT_FORMS, SCHEDULE_SLOTS } from "@/lib/types";
 
@@ -17,6 +17,9 @@ export const profiles = sm.table("profiles", {
   email: text("email"),
   displayName: text("display_name"),
   timezone: text("timezone").notNull().default("Asia/Taipei"),
+  theme: text("theme", { enum: ["c", "e"] })
+    .notNull()
+    .default("c"),
   createdAt: ts("created_at").notNull().defaultNow(),
   updatedAt: ts("updated_at").notNull().defaultNow(),
 });
@@ -70,4 +73,17 @@ export const inventoryTransactions = sm.table("inventory_transactions", {
   createdAt: ts("created_at").notNull().defaultNow(),
 });
 
-export const schema = { ...authSchema, profiles, supplements, intakeLogs, inventoryTransactions };
+export const knowledge = sm.table("knowledge", {
+  slug: text("slug").primaryKey(),
+  name: text("name").notNull(),
+  aliases: text("aliases").array().notNull().default([]),
+  entry: jsonb("entry").notNull(),
+  source: text("source", { enum: ["ai", "mock"] }).notNull(),
+  model: text("model"),
+  promptVersion: text("prompt_version").notNull(),
+  createdBy: uuid("created_by"),
+  createdAt: ts("created_at").notNull().defaultNow(),
+  updatedAt: ts("updated_at").notNull().defaultNow(),
+});
+
+export const schema = { ...authSchema, profiles, supplements, intakeLogs, inventoryTransactions, knowledge };

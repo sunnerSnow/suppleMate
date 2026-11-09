@@ -13,7 +13,9 @@
 | Step 2 四個主要頁面 | 完成 |
 | Step 3 資料模型與 CRUD（新增／編輯／封存、表單驗證、空狀態與錯誤狀態） | 完成 |
 | Step 4 服用紀錄與庫存交易（勾選／取消、防重複扣庫存、異動紀錄、低庫存計算） | 完成 |
-| Step 5 後端：Neon Postgres＋Better Auth 登入＋RLS 依使用者隔離 | 完成（程式與測試；Neon 連線由使用者設定） |
+| Step 5 後端：Neon Postgres＋Better Auth 登入＋RLS 依使用者隔離 | 完成（已接上 Neon） |
+| 第二階段：保健品小知識＋建議方案（內建資料＋AI 補充） | 完成 |
+| 介面主題：C 繪本粗線／E 旅行雜誌濃彩，使用者可切換 | 完成 |
 | Step 6 部署到 Vercel | 未開始 |
 
 ## 快速開始（本機示範模式，不需要資料庫）
@@ -75,23 +77,32 @@ web/
 │     ├─ today/ supplements/ inventory/ history/ settings/
 ├─ src/components/            ui（button、card、field、dialog、toast、state、decor、tone…）、nav、today、supplements、inventory
 ├─ src/lib/
-│  ├─ types.ts constants.ts date.ts
+│  ├─ types.ts constants.ts date.ts theme.ts
+│  ├─ knowledge/              內建小知識、名稱比對、建議方案（純函式）、AI 提示
+│  ├─ ai/                     provider 介面、Gemini／mock、結構化輸出驗證
 │  ├─ domain/                 ledger（勾選／取消／補貨／調整的純函式）、plan、inventory、validation
 │  ├─ db/                     client（Neon／PGlite）、schema、auth-schema、with-user（RLS）、local
 │  ├─ auth/                   Better Auth 設定、session、示範使用者
-│  ├─ services/               supplements、ledger（交易內套用純函式）、snapshot、profiles、sample、rate-limit
+│  ├─ services/               supplements、ledger（交易內套用純函式）、snapshot、profiles、sample、rate-limit、knowledge
 │  └─ store/                  repository 介面、remote-repository（呼叫 Server Action）、store-provider（React context）
 └─ tests/                     domain 單元測試＋services／auth 整合測試（PGlite）
 ```
 
-## 視覺方向
+## 介面主題
 
-活潑、圓潤、像兒童健康教室的氣質，但資訊層級清楚：
+兩套主題共用同一份頁面結構，長相由 `<html data-theme>` 的 CSS 決定（`web/src/app/globals.css`）；使用者在設定頁切換，選擇存在 `sm.profiles.theme`，另外寫 `sm-theme` cookie 讓伺服器端第一次渲染就套對主題。
 
-- **字體**：英文與數字用 Fredoka（圓體，class `font-en`），繁體中文用 Huninn 粉圓體。
-- **色彩**：暖白底；每個頁面一個主題色（今日＝天空藍、保健品＝綠、庫存＝橘、紀錄＝紫），黃色是主要操作色，紅色只用在庫存不足等提醒。彩色只做背景、邊框與圖示，文字一律深色以確保對比。token 在 `web/src/app/globals.css`，色調對照在 `web/src/components/ui/tone.ts`。
-- **形狀**：白色厚圓角卡片（24px、2px 邊框、底部實色陰影）、膠囊按鈕有「餅乾」厚底、按下會往下壓；底部導覽是浮動膠囊。
-- **裝飾與動效**：雲朵、色塊、貼紙式英文小標；勾選有彈跳感、清單逐項進場；`prefers-reduced-motion` 時全部關閉。
+- **C 繪本粗線**（預設）：奶油米底、炭黑 3px 線框、珊瑚紅與藍、粗圓體（Huninn＋Zen Maru Gothic）、點狀虛線底線；今日頁是左側黑直線串起時段的時間軸；深色區塊與 L 形轉角線。
+- **E 旅行雜誌濃彩**：濃綠底、深藍／水藍／橘／黃色帶、白卡 3px 黑框＋黃標題條＋紅標籤、波浪分隔、黃點點、跑馬燈、大圓角綠容器；Montserrat＋Noto Sans TC。
+
+設計稿在 `design/theme-proposals.html`。文字一律深色或深底白字，顏色只做背景、邊框與圖示；`prefers-reduced-motion` 時動畫關閉。
+
+## 保健品小知識與建議方案
+
+- 內建約 38 種常見保健品的小知識（`web/src/lib/knowledge/builtin.ts`）：常見服用時機與原因、一般攝取範圍、小知識、注意事項、建議分開／可以一起的組合。以正規化名稱比對（別名、英文、劑量字串都能對上）。
+- 內建沒有的，使用者可按「請 AI 整理」：Gemini 結構化輸出（`AI_PROVIDER=gemini`；預設 `mock` 回示範內容），zod 驗證後存進共用快取 `sm.knowledge`，之後任何人查同名都直接用。每人每小時、全站每日有次數上限。
+- 新增／編輯保健品時輸入名稱即顯示小知識與「套用為 ○○」；詳細頁可套用建議時段；「方案」頁排出一天的時段總覽、建議補上的時段、搭配提醒（要分開／可一起）與各項小知識。
+- 原則：系統只顯示建議，使用者按「套用」才會寫進計畫；全部標示「一般資訊，非醫療建議」。
 
 ## 與規格的差異
 

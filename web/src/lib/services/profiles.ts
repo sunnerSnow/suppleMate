@@ -6,7 +6,7 @@ import { users } from "@/lib/db/auth-schema";
 import { withService, withUser, type Tx } from "@/lib/db/with-user";
 import { issuesFromZod, validationFailed } from "@/lib/errors";
 import { iso } from "@/lib/services/mappers";
-import type { UserProfile } from "@/lib/types";
+import { THEMES, type UserProfile } from "@/lib/types";
 
 /** 第一次登入時建立 profile（以伺服器身分：此時還沒有可用的 RLS 身分）；顯示名稱預設用註冊時的名字 */
 export async function ensureProfile(
@@ -50,19 +50,21 @@ export async function getProfile(db: Db, userId: string): Promise<UserProfile | 
 const profileInput = z.object({
   displayName: z.string().trim().max(60, "顯示名稱最多 60 個字").optional(),
   timezone: z.string().trim().min(1).max(64, "時區太長").refine(isValidTimezone, "不支援的時區").optional(),
+  theme: z.enum(THEMES).optional(),
 });
 export type ProfileInput = z.input<typeof profileInput>;
 
 export async function updateProfile(db: Db, userId: string, input: unknown): Promise<UserProfile> {
   const parsed = profileInput.safeParse(input);
   if (!parsed.success) throw validationFailed(issuesFromZod(parsed.error));
-  const { displayName, timezone } = parsed.data;
+  const { displayName, timezone, theme } = parsed.data;
   const [row] = await withUser(db, userId, (tx) =>
     tx
       .update(profiles)
       .set({
         ...(displayName !== undefined ? { displayName: displayName || null } : {}),
         ...(timezone !== undefined ? { timezone } : {}),
+        ...(theme !== undefined ? { theme } : {}),
       })
       .where(eq(profiles.id, userId))
       .returning(),
@@ -84,6 +86,7 @@ function toProfile(row: typeof profiles.$inferSelect): UserProfile {
   return {
     displayName: row.displayName ?? undefined,
     email: row.email ?? undefined,
+    theme: row.theme,
     timezone: row.timezone,
     createdAt: iso(row.createdAt),
     updatedAt: iso(row.updatedAt),

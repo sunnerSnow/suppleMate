@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SuppleMate 主題提案 C／E</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Huninn&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Noto+Sans+TC:wght@500;700;900&display=swap">
+<style>
+  :root { --page: #ECE9E2; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--page); color: #222; font-family: "Noto Sans TC", system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  .page { max-width: 1320px; margin: 0 auto; padding: 40px 24px 80px; }
+  .page > h1 { font-size: 28px; margin: 0 0 6px; }
+  .page > p.lead { margin: 0 0 32px; color: #555; font-size: 14px; line-height: 1.7; max-width: 760px; }
+  .proposal { margin-top: 56px; }
+  .proposal-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+  .proposal-head h2 { font-size: 24px; margin: 0; }
+  .proposal-head .meta { font-size: 13px; color: #555; }
+  .proposal-notes { font-size: 13px; color: #444; line-height: 1.7; max-width: 900px; margin: 0 0 20px; }
+  .proposal-notes b { color: #222; }
+  .frames { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .frame { width: 390px; height: 844px; border-radius: 36px; overflow: hidden; position: relative; box-shadow: 0 20px 50px -20px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.08); flex-shrink: 0; }
+  .frame-label { font-size: 12px; color: #666; margin: 8px 0 0 6px; }
+  .frame-wrap { display: flex; flex-direction: column; }
+  .screen { position: absolute; inset: 0; overflow: hidden; }
+  svg { display: block; }
+
+  /* ================= C 繪本粗線 ================= */
+  .c { background: #FAF2EB; color: #222; font-family: "Huninn", "Zen Maru Gothic", "Noto Sans TC", sans-serif; font-weight: 700; letter-spacing: 0.06em; font-size: 14px; line-height: 1.5; }
+  .c .en { font-family: "Zen Maru Gothic", "Huninn", sans-serif; font-weight: 900; letter-spacing: 0.04em; }
+  .c .num { font-family: "Zen Maru Gothic", sans-serif; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .c .top { display: flex; align-items: center; justify-content: space-between; padding: 22px 22px 0; }
+  .c .logo { display: flex; align-items: center; gap: 8px; }
+  .c .logo .main { font-size: 22px; line-height: 1; }
+  .c .logo .sub { font-size: 11px; background: #fff; border-radius: 100vmax; padding: 5px 10px; line-height: 1; }
+  .c .round-btn { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #222; display: inline-flex; align-items: center; justify-content: center; background: #fff; }
+  .c .dot-h { background-image: radial-gradient(circle, #D57563 1.6px, transparent 1.8px); background-size: 7px 4px; background-repeat: repeat-x; background-position: left bottom; padding-bottom: 7px; }
+  .c .dot-h.blue { background-image: radial-gradient(circle, #3280CF 1.6px, transparent 1.8px); }
+  .c .kv { position: relative; margin: 18px 22px 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .c .kv h1 { margin: 0; font-size: 30px; line-height: 1.25; }
+  .c .kv h1 .dot-h { display: inline; }
+  .c .kv .date { margin-top: 10px; font-size: 13px; color: #555; display: flex; align-items: center; gap: 8px; }
+  .c .kv .date .chip { background: #222; color: #FAF2EB; border-radius: 100vmax; padding: 4px 10px; font-size: 11px; }
+  .c .ring { position: relative; width: 112px; height: 112px; flex-shrink: 0; }
+  .c .ring .label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .c .ring .label .big { font-size: 26px; line-height: 1; }
+  .c .ring .label .small { font-size: 11px; color: #555; margin-top: 4px; }
+  .c .heart { position: absolute; right: -4px; top: -10px; }
+  .c .timeline { margin: 22px 22px 0; position: relative; padding-left: 30px; }
+  .c .timeline:before { content: ""; position: absolute; left: 9px; top: 10px; bottom: 10px; width: 3px; background: #222; border-radius: 2px; }
+  .c .slot { position: relative; margin-bottom: 18px; }
+  .c .slot:before { content: ""; position: absolute; left: -30px; top: 2px; width: 21px; height: 21px; border-radius: 50%; background: #FAF2EB; border: 3px solid #222; }
+  .c .slot.done:before { background: #D57563; }
+  .c .slot.unconfirmed:before { border-style: dashed; }
+  .c .slot-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+  .c .slot-head h2 { margin: 0; font-size: 16px; }
+  .c .slot-head .count { font-size: 12px; color: #3280CF; }
+  .c .row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 2px solid #222; }
+  .c .row:last-child { border-bottom: 0; }
+  .c .cat { font-size: 10px; border-radius: 100vmax; padding: 3px 8px; border: 2px solid #222; background: #fff; white-space: nowrap; }
+  .c .cat.red { border-color: #D57563; color: #9E3F2E; }
+  .c .cat.blue { border-color: #3280CF; color: #1F4F86; }
+  .c .row .name { flex: 1; min-width: 0; font-size: 15px; }
+  .c .row .name small { display: block; font-size: 11px; color: #666; font-weight: 700; }
+  .c .check { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #222; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .c .check.on { background: #D57563; }
+  .c .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: #222; color: #fff; border-radius: 100vmax; padding: 10px 18px; font-size: 13px; line-height: 1; }
+  .c .btn.blue { background: #3280CF; }
+  .c .outline { background: #fff; border: 3px solid #222; border-radius: 0 22px 0 22px; padding: 14px 16px; position: relative; }
+  .c .outline h3 { margin: 0 0 4px; font-size: 16px; color: #3280CF; }
+  .c .outline p { margin: 0; font-size: 12px; color: #444; line-height: 1.6; }
+  .c .il { width: 54px; height: 54px; border-radius: 50%; background: #F5E9DE; border: 3px solid #222; display: inline-flex; align-items: center; justify-content: center; position: absolute; left: -14px; top: -18px; }
+  .c .dark { background: #222; color: #FAF2EB; margin: 20px 0 0; padding: 22px 22px 26px; border-radius: 40px 0 0 0; }
+  .c .dark h2 { margin: 0; font-size: 20px; line-height: 1.35; }
+  .c .dark p { margin: 10px 0 0; font-size: 12px; line-height: 1.7; color: rgba(250,242,235,.85); }
+  .c .bracket { position: relative; padding: 14px 0 0 14px; margin-top: 10px; }
+  .c .bracket:before { content: ""; position: absolute; left: 0; top: 0; width: 60%; height: 30px; border-top: 2px solid #222; border-left: 2px solid #222; border-radius: 18px 0 0 0; }
+  .c .bracket.light:before { border-color: #FAF2EB; }
+  .c .nav { position: absolute; left: 0; right: 0; bottom: 0; background: #FAF2EB; border-top: 3px solid #222; display: flex; padding: 10px 10px 16px; }
+  .c .nav a { flex: 1; text-align: center; font-size: 12px; padding: 8px 0 6px; line-height: 1; }
+  .c .nav a.active { background-image: radial-gradient(circle, #D57563 1.6px, transparent 1.8px); background-size: 7px 4px; background-repeat: repeat-x; background-position: center bottom; padding-bottom: 8px; color: #222; }
+  .c .nav a:not(.active) { color: #666; }
+  .c .search { display: flex; align-items: center; gap: 8px; margin: 16px 22px 0; background: #fff; border: 3px solid #222; border-radius: 100vmax; padding: 10px 14px; font-size: 13px; color: #777; }
+  .c .cards { margin: 20px 22px 0; display: flex; flex-direction: column; gap: 26px; }
+  .c .card-meta { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .c .stock { font-size: 12px; }
+  .c .stock .num { font-size: 18px; }
+  .c .tag-row { display: flex; gap: 6px; margin: 14px 22px 0; }
+  .c .tag { font-size: 12px; border-radius: 100vmax; padding: 6px 14px; border: 2px solid #222; background: #fff; }
+  .c .tag.on { background: #222; color: #FAF2EB; }
+  .c .knowledge { margin: 18px 22px 0; }
+  .c .knowledge h2 { margin: 0 0 10px; font-size: 16px; }
+  .c .kcard { background: #F5E9DE; border-radius: 22px 0 22px 0; padding: 14px 16px; font-size: 12px; line-height: 1.7; color: #333; position: relative; }
+  .c .kcard b { color: #222; display: block; font-size: 14px; margin-bottom: 2px; }
+  .c .kcard .apply { position: absolute; right: 12px; top: 12px; }
+  .c .pair { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 2px dotted #222; font-size: 12px; }
+  .c .pair:last-child { border-bottom: 0; }
+  .c .pair .names { font-size: 14px; }
+  .c .pair .how { margin-left: auto; white-space: nowrap; font-size: 11px; border-radius: 100vmax; padding: 4px 10px; border: 2px solid #D57563; color: #9E3F2E; background: #fff; }
+  .c .pair .how.ok { border-color: #3280CF; color: #1F4F86; }
+
+  /* ================= E 旅行雜誌濃彩（多摩） ================= */
+  .e { background: #018C3E; color: #241B19; font-family: "Noto Sans TC", sans-serif; font-weight: 700; font-size: 13px; line-height: 1.6; letter-spacing: 0.04em; }
+  .e .en { font-family: "Montserrat", sans-serif; font-weight: 900; letter-spacing: 0.02em; }
+  .e .num { font-family: "Montserrat", sans-serif; font-weight: 800; font-variant-numeric: tabular-nums; }
+  /* 波浪分隔線（參考站的正弦 SVG） */
+  .e .wave { display: block; width: 100%; height: 16px; }
+  /* 點點裝飾列（參考站 nav 區的 148 個小圓點） */
+  .e .dots { height: 8px; margin: 10px 18px 0; background-image: radial-gradient(circle, #FFF040 2.2px, transparent 2.6px); background-size: 12px 8px; background-repeat: repeat-x; }
+  .e .top { background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px 10px; }
+  .e .logo { font-family: "Montserrat", sans-serif; font-weight: 900; font-style: italic; font-size: 22px; letter-spacing: -0.01em; color: #1D2088; line-height: 1; }
+  .e .logo small { display: block; font-style: normal; font-family: "Noto Sans TC", sans-serif; font-weight: 700; font-size: 10px; color: #241B19; letter-spacing: 0.1em; margin-top: 4px; }
+  .e .menu { width: 40px; height: 40px; border-radius: 50%; background: #EA5504; display: inline-flex; align-items: center; justify-content: center; }
+  /* 水藍 KV 帶 */
+  .e .kv { background: #00B9EF; padding: 16px 18px 18px; position: relative; overflow: hidden; }
+  .e .kv .en.big { font-size: 44px; line-height: 0.95; color: #1D2088; }
+  .e .kv .date { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; background: #fff; border-radius: 5px; padding: 4px 10px; font-size: 12px; }
+  .e .kv .date .num { font-size: 14px; }
+  .e .badge { position: absolute; right: 16px; top: 14px; width: 92px; height: 92px; border-radius: 50%; background: #fff; border: 3px solid #241B19; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-6deg); }
+  .e .badge .num { font-size: 26px; line-height: 1; color: #EA5504; }
+  .e .badge small { font-size: 9px; letter-spacing: 0.12em; margin-top: 3px; }
+  .e .vtext { position: absolute; left: -2px; bottom: 10px; writing-mode: vertical-rl; transform: rotate(180deg); font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.2em; color: #1D2088; opacity: .7; }
+  /* 白卡片＋黃標題條＋紅標籤 */
+  .e .card { background: #fff; border: 3px solid #241B19; border-radius: 10px; margin: 12px 18px 0; overflow: hidden; }
+  .e .card-head { background: #FFF040; display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 3px solid #241B19; }
+  .e .card-head h2 { margin: 0; font-size: 15px; font-weight: 900; }
+  .e .card-head .en { font-size: 9px; letter-spacing: 0.14em; color: #1D2088; display: block; }
+  .e .rtag { background: #E60020; color: #fff; border-radius: 5px; padding: 3px 8px; font-size: 10px; font-weight: 900; letter-spacing: 0.06em; white-space: nowrap; }
+  .e .rtag.blue { background: #1D2088; }
+  .e .rtag.green { background: #018C3E; }
+  .e .rtag.orange { background: #EA5504; }
+  .e .item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 2px dotted #C9C4B8; }
+  .e .item:last-child { border-bottom: 0; }
+  .e .item .name { flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; }
+  .e .item .name small { display: block; font-size: 11px; color: #676767; font-weight: 700; }
+  .e .circle { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #241B19; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .e .circle.on { background: #EA5504; }
+  .e .circle.sm { width: 12px; height: 12px; border-width: 2px; }
+  .e .time { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 11px; color: #018C3E; }
+  .e .btn { display: inline-flex; align-items: center; gap: 6px; background: #1D2088; color: #fff; border-radius: 100vmax; padding: 8px 14px; font-size: 12px; font-weight: 900; line-height: 1; }
+  .e .btn.orange { background: #EA5504; }
+  .e .btn.white { background: #fff; color: #241B19; border: 2px solid #241B19; }
+  /* 大圓角綠色容器（參考站 about 的 80px 圓角＋4px 黑頂線） */
+  .e .bigbox { background: #1AAA3B; border-radius: 40px 40px 0 0; border-top: 4px solid #241B19; margin: 16px 0 0; padding: 18px 18px 24px; }
+  .e .bigbox .title { display: flex; align-items: baseline; gap: 10px; color: #fff; margin-bottom: 12px; }
+  .e .bigbox .title .en { font-size: 26px; line-height: 1; }
+  .e .bigbox .title span { font-size: 12px; opacity: .9; }
+  /* 跑馬燈（參考站的照片對流，這裡改成保健品小圖示） */
+  .e .marquee { overflow: hidden; background: #1D2088; padding: 8px 0; }
+  .e .marquee .track { display: flex; gap: 14px; width: max-content; animation: e-left 22s linear infinite; }
+  .e .marquee.rev .track { animation-name: e-right; }
+  .e .marquee .tile { width: 58px; height: 42px; border-radius: 8px; background: #fff; display: inline-flex; align-items: center; justify-content: center; color: #1D2088; flex-shrink: 0; }
+  .e .marquee .tile.y { background: #FFF040; } .e .marquee .tile.o { background: #EA5504; color: #fff; } .e .marquee .tile.b { background: #00B9EF; }
+  @keyframes e-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes e-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  /* 黃卡（參考站 event 的 #FFF040 卡片） */
+  .e .ycard { background: #FFF040; border-radius: 10px; padding: 12px 14px; margin: 12px 18px 0; display: flex; gap: 10px; align-items: center; }
+  .e .ycard .name { flex: 1; min-width: 0; font-size: 14px; }
+  .e .ycard .name small { display: block; font-size: 11px; color: #4A4A46; }
+  .e .list { background: #fff; border-radius: 10px; margin: 12px 18px 0; overflow: hidden; }
+  .e .list .r { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-bottom: 2px dotted #C9C4B8; }
+  .e .list .r:last-child { border-bottom: 0; }
+  .e .list .r .name { flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; }
+  .e .list .r .name small { display: block; font-size: 11px; color: #676767; }
+  .e .list .r .stock { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 15px; }
+  .e .search { margin: 12px 18px 0; background: #fff; border-radius: 100vmax; padding: 9px 14px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #676767; }
+  .e .nav { position: absolute; left: 0; right: 0; bottom: 0; background: #1D2088; display: flex; padding: 8px 8px 14px; border-top: 3px solid #241B19; }
+  .e .nav a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 0; color: rgba(255,255,255,.75); font-size: 10px; font-weight: 700; }
+  .e .nav a .ic { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+  .e .nav a.active { color: #FFF040; }
+  .e .nav a.active .ic { background: #FFF040; color: #1D2088; border: 2px solid #241B19; }
+  .e .blue { background: #1D2088; color: #fff; padding: 18px 18px 22px; }
+  .e .blue h2 { margin: 0; font-size: 22px; font-weight: 900; line-height: 1.3; }
+  .e .blue h2 .en { display: block; font-size: 11px; letter-spacing: 0.16em; color: #FFF040; margin-bottom: 4px; }
+  .e .blue p { margin: 8px 0 0; font-size: 12px; line-height: 1.7; color: rgba(255,255,255,.85); }
+  .e .plan { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 2px dotted rgba(255,255,255,.35); }
+  .e .plan:last-child { border-bottom: 0; }
+  .e .plan .slot { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 11px; background: #FFF040; color: #1D2088; border-radius: 5px; padding: 3px 7px; white-space: nowrap; margin-top: 2px; }
+  .e .plan .what { font-size: 13px; }
+  .e .plan .what small { display: block; font-size: 11px; color: rgba(255,255,255,.75); font-weight: 700; }
+  .e .tip { margin: 12px 18px 0; background: #fff; border: 3px solid #241B19; border-radius: 10px; padding: 12px 14px; font-size: 12px; line-height: 1.6; position: relative; }
+  .e .tip b { display: block; font-size: 14px; }
+  .e .tip .rtag { position: absolute; right: 10px; top: -10px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>SuppleMate 主題提案 C／E</h1>
+  <p class="lead">兩套都依參考站的版面語言設計，不是換色票。每套三個畫面：今日、保健品、方案（第二階段的小知識＋建議方案）。方案 D 已依你的意見移除。所有建議都標示「一般資訊，非醫療建議」，使用者按「套用」才會寫進計畫。</p>
+
+  <!-- ===================================================== C ===================================================== -->
+  <section class="proposal">
+    <div class="proposal-head"><h2>方案 C 繪本粗線</h2><span class="meta">奶油米 #FAF2EB ／ 炭黑 #222 ／ 珊瑚紅 #D57563 ／ 藍 #3280CF ／ 粗圓體</span></div>
+    <p class="proposal-notes"><b>招牌手法：</b>粗圓體當內文；紅色點狀虛線當底線、藍色當側線；今日頁是左側黑直線串起時段的「時間軸」，吃完的節點填珊瑚紅；項目用條列式（類別膠囊＋名稱＋右側勾選圈）；保健品頁用「單角不圓」的粗框卡片加圓形插圖；深色區塊穿插；L 形轉角線當小知識裝飾；底部導覽是文字，作用中的用紅色點狀底線。（你已確認可以）</p>
+    <div class="frames">
+
+      <div class="frame-wrap">
+        <div class="frame"><div class="screen c">
+          <div class="top">
+            <div class="logo"><span class="main en">SuppleMate</span><span class="sub">保健品管理助手</span></div>
+            <span class="round-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+          </div>
+          <div class="kv">
+            <div>
+              <h1>今天還有<br><span class="dot-h">3 項</span>要吃</h1>
+              <div class="date"><span class="chip">今天</span><span class="num">11.09</span> 週日</div>
+            </div>
+            <div class="ring">
+              <svg width="112" height="112" viewBox="0 0 112 112"><circle cx="56" cy="56" r="46" fill="#fff" stroke="#222" stroke-width="3"/><circle cx="56" cy="56" r="46" fill="none" stroke="#D57563" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="40 100" transform="rotate(-90 56 56)"/></svg>
+              <div class="label"><span class="big num">2/5</span><span class="small">已完成</span></div>
+              <svg class="heart" width="30" height="30" viewBox="0 0 24 24" fill="#D57563" stroke="#222" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"/></svg>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="slot done">
+              <div class="slot-head"><h2>早餐後</h2><span class="count num">2 / 2</span></div>
+              <div class="row"><span class="cat red">隨餐</span><span class="name">魚油<small>1 顆 · Nordic Naturals · 08:12</small></span><span class="check on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></div>
+              <div class="row"><span class="cat red">隨餐</span><span class="name">維生素 D3<small>1 錠 · Now Foods · 08:12</small></span><span class="check on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></div>
+            </div>
+            <div class="slot">
+              <div class="slot-head"><h2>晚餐後</h2><span class="count num">0 / 2</span></div>
+              <div class="row"><span class="cat red">隨餐</span><span class="name">魚油<small>1 顆</small></span><span class="check"></span></div>
+              <div class="row"><span class="cat">空腹</span><span class="name">益生菌<small>1 包 · 庫存不足，先補貨</small></span><span class="check"></span></div>
+            </div>
+            <div class="slot unconfirmed">
+              <div class="slot-head"><h2>尚未確認</h2><span class="count">時段待設定</span></div>
+              <div class="row"><span class="cat blue">建議</span><span class="name">B 群<small>常見時機：早餐後（隨餐）</small></span><a class="btn blue" href="#">套用</a></div>
+            </div>
+          </div>
+          <nav class="nav"><a class="active" href="#">今日</a><a href="#">保健品</a><a href="#">庫存</a><a href="#">紀錄</a><a href="#">方案</a></nav>
+        </div></div>
+        <div class="frame-label">C · 今日（時間軸）</div>
+      </div>
+
+      <div class="frame-wrap">
+        <div class="frame"><div class="screen c">
+          <div class="top">
+            <div class="logo"><span class="main en">SuppleMate</span><span class="sub">保健品管理助手</span></div>
+            <a class="btn" href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>新增</a>
+          </div>
+          <div class="kv"><div><h1>我的<span class="dot-h blue">保健品</span></h1><div class="date">使用中 <span class="num">5</span> 項 · 已封存 <span class="num">1</span> 項</div></div></div>
+          <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>搜尋名稱或品牌</div>
+          <div class="tag-row"><span class="tag on">使用中</span><span class="tag">已封存</span></div>
+          <div class="cards">
+            <div class="outline">
+              <span class="il"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 7.8l5 8.4"/></svg></span>
+              <h3 style="padding-left:34px">魚油</h3>
+              <p>1 顆 × 2 次（早餐後、晚餐後）· Nordic Naturals</p>
+              <div class="card-meta"><span class="stock">庫存 <span class="num">48</span> 顆</span><span class="cat blue">庫存充足</span><span class="cat red">隨餐</span></div>
+            </div>
+            <div class="outline">
+              <span class="il"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+              <h3 style="padding-left:34px">維生素 D3</h3>
+              <p>1 錠 × 1 次（早餐後）· Now Foods</p>
+              <div class="card-meta"><span class="stock">庫存 <span class="num">9</span> 錠</span><span class="cat">即將補貨 · 剩 9 天</span></div>
+            </div>
+            <div class="outline">
+              <span class="il"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20h12l-1-10H7z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg></span>
+              <h3 style="padding-left:34px">益生菌</h3>
+              <p>1 包 × 1 次（早餐前）· 威德</p>
+              <div class="card-meta"><span class="stock">庫存 <span class="num">0</span> 包</span><span class="cat red">庫存不足</span><a class="btn" href="#" style="margin-left:auto">補貨</a></div>
+            </div>
+          </div>
+          <nav class="nav"><a href="#">今日</a><a class="active" href="#">保健品</a><a href="#">庫存</a><a href="#">紀錄</a><a href="#">方案</a></nav>
+        </div></div>
+        <div class="frame-label">C · 保健品（粗框卡片＋圓形插圖）</div>
+      </div>
+
+      <div class="frame-wrap">
+        <div class="frame"><div class="screen c">
+          <div class="top">
+            <div class="logo"><span class="main en">SuppleMate</span><span class="sub">保健品管理助手</span></div>
+            <span class="round-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+          </div>
+          <div class="dark">
+            <h2>一天這樣吃，<br>比較順。</h2>
+            <p>依你目前的 5 項保健品，用產品常見的服用時機排成一天。這是一般資訊，不是醫療建議；按「套用」才會寫進你的計畫。</p>
+            <div class="bracket light"><span class="en" style="font-size:12px;opacity:.8">PLAN · 2026.11.09</span></div>
+          </div>
+          <div class="timeline" style="margin-top:20px">
+            <div class="slot"><div class="slot-head"><h2>早餐後</h2><span class="count">隨餐</span></div><div class="row"><span class="name">魚油 · 維生素 D3<small>脂溶性，隨餐吸收較好；兩者可以一起吃</small></span></div></div>
+            <div class="slot"><div class="slot-head"><h2>晚餐後</h2><span class="count">隨餐</span></div><div class="row"><span class="name">魚油<small>第二次</small></span></div></div>
+            <div class="slot"><div class="slot-head"><h2>睡前</h2><span class="count">空腹可</span></div><div class="row"><span class="name">鎂<small>許多人睡前吃幫助放鬆</small></span></div></div>
+            <div class="slot unconfirmed"><div class="slot-head"><h2>建議補上</h2><span class="count" style="color:#9E3F2E">1 項未設定</span></div><div class="row"><span class="cat blue">建議</span><span class="name">B 群 → 早餐後<small>水溶性，早上隨餐最常見</small></span><a class="btn blue" href="#">套用</a></div></div>
+          </div>
+          <div class="knowledge">
+            <h2 class="dot-h" style="display:inline-block">搭配提醒</h2>
+            <div class="pair"><span class="names">鈣 ＋ 鐵</span><span style="color:#555">競爭吸收</span><span class="how">間隔 2 小時</span></div>
+            <div class="pair"><span class="names">魚油 ＋ 維生素 D</span><span style="color:#555">同為脂溶性</span><span class="how ok">可以一起</span></div>
+          </div>
+          <div class="knowledge"><div class="bracket"><div class="kcard"><b>小知識：魚油</b>看成分表的 EPA＋DHA 總量，不是魚油總重；開封後冷藏避光。<span class="apply cat blue">內建資料</span></div></div></div>
+          <nav class="nav"><a href="#">今日</a><a href="#">保健品</a><a href="#">庫存</a><a href="#">紀錄</a><a class="active" href="#">方案</a></nav>
+        </div></div>
+        <div class="frame-label">C · 方案（深色開場＋時間軸＋搭配提醒）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== E ===================================================== -->
+  <section class="proposal">
+    <div class="proposal-head"><h2>方案 E 旅行雜誌濃彩</h2><span class="meta">綠 #018C3E ／ 深藍 #1D2088 ／ 水藍 #00B9EF ／ 橘 #EA5504 ／ 黃 #FFF040 ／ 紅 #E60020 ／ 墨 #241B19</span></div>
+    <p class="proposal-notes"><b>招牌手法（新參考站）：</b>全頁濃綠底，區塊用飽和色帶切換（水藍 KV、深藍、黃卡）；白色卡片配 3px 黑線框，卡片頂端是黃色標題條＋紅色小標籤；正弦波浪分隔線；黃色點點裝飾列；大圓角（40px）的綠色大容器加 4px 黑色頂線；照片跑馬燈左右對流（這裡改成保健品小圖示）；斜放的圓形徽章；直排英文小字；底部導覽是深藍底、作用中的頁籤變黃色圓形。字型：Montserrat 900（英數，logo 用斜體）＋ Noto Sans TC 700，字級 12–14px、字距 0.04em。</p>
+    <div class="frames">
+
+      <!-- E 今日 -->
+      <div class="frame-wrap">
+        <div class="frame"><div class="screen e">
+          <div class="top">
+            <div class="logo">SuppleMate<small>保健品管理助手</small></div>
+            <span class="menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+          </div>
+          <svg class="wave" viewBox="0 0 400 16" preserveAspectRatio="none"><path d="M0 0 C 12 0 12 16 25 16 C 38 16 38 0 50 0 C 62 0 62 16 75 16 C 88 16 88 0 100 0 C 112 0 112 16 125 16 C 138 16 138 0 150 0 C 162 0 162 16 175 16 C 188 16 188 0 200 0 C 212 0 212 16 225 16 C 238 16 238 0 250 0 C 262 0 262 16 275 16 C 288 16 288 0 300 0 C 312 0 312 16 325 16 C 338 16 338 0 350 0 C 362 0 362 16 375 16 C 388 16 388 0 400 0 V0 H0 Z" fill="#fff"/></svg>
+
+          <div class="kv">
+            <span class="vtext">DAILY RECORD</span>
+            <div class="en big">TODAY</div>
+            <div class="date"><span class="num">11.09</span> 週日 · 還有 3 項</div>
+            <div class="badge"><span class="num">2/5</span><small class="en">DONE</small></div>
+          </div>
+          <svg class="wave" viewBox="0 0 400 16" preserveAspectRatio="none"><path d="M0 0 C 12 0 12 16 25 16 C 38 16 38 0 50 0 C 62 0 62 16 75 16 C 88 16 88 0 100 0 C 112 0 112 16 125 16 C 138 16 138 0 150 0 C 162 0 162 16 175 16 C 188 16 188 0 200 0 C 212 0 212 16 225 16 C 238 16 238 0 250 0 C 262 0 262 16 275 16 C 288 16 288 0 300 0 C 312 0 312 16 325 16 C 338 16 338 0 350 0 C 362 0 362 16 375 16 C 388 16 388 0 400 0 V0 H0 Z" fill="#00B9EF"/></svg>
+          <div class="dots"></div>
+
+          <div class="card">
+            <div class="card-head"><h2><span class="en">AFTER BREAKFAST</span>早餐後</h2><span class="rtag green">2 / 2 完成</span></div>
+            <div class="item"><span class="circle on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span class="name">魚油<small>1 顆 · Nordic Naturals</small></span><span class="time">08:12</span></div>
+            <div class="item"><span class="circle on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span class="name">維生素 D3<small>1 錠 · Now Foods</small></span><span class="time">08:12</span></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2><span class="en">AFTER DINNER</span>晚餐後</h2><span class="rtag">0 / 2</span></div>
+            <div class="item"><span class="circle"></span><span class="name">魚油<small>1 顆</small></span></div>
+            <div class="item"><span class="circle"></span><span class="name">益生菌<small>1 包 · 威德</small></span><span class="rtag orange">庫存不足</span></div>
+          </div>
+
+          <div class="ycard"><span class="circle sm" style="border-color:#1D2088"></span><span class="name">B 群 · 尚未確認<small>常見時機：早餐後（隨餐）</small></span><a class="btn" href="#">套用</a></div>
+
+          <nav class="nav">
+            <a class="active" href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>今日</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 7.8l5 8.4"/></svg></span>保健品</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></span>庫存</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>紀錄</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="3"/></svg></span>方案</a>
+          </nav>
+        </div></div>
+        <div class="frame-label">E · 今日（水藍 KV＋黑框白卡＋黃標題條）</div>
+      </div>
+
+      <!-- E 保健品 -->
+      <div class="frame-wrap">
+        <div class="frame"><div class="screen e">
+          <div class="top">
+            <div class="logo">SuppleMate<small>保健品管理助手</small></div>
+            <a class="btn orange" href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>新增</a>
+          </div>
+          <div class="marquee"><div class="track">
+            <span class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 7.8l5 8.4"/></svg></span><span class="tile y"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2088" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/></svg></span><span class="tile o"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20h12l-1-10H7z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg></span><span class="tile b"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2088" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg></span><span class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 4h10v16H7z"/><path d="M9 8h6"/></svg></span>
+            <span class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 7.8l5 8.4"/></svg></span><span class="tile y"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2088" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/></svg></span><span class="tile o"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20h12l-1-10H7z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg></span><span class="tile b"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2088" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg></span><span class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 4h10v16H7z"/><path d="M9 8h6"/></svg></span>
+          </div></div>
+
+          <div class="bigbox">
+            <div class="title"><span class="en">ITEMS</span><span>我的保健品 · 使用中 5 項</span></div>
+            <div class="search" style="margin:0 0 10px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#676767" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>搜尋名稱或品牌</div>
+            <div class="list" style="margin:0">
+              <div class="r"><span class="circle sm" style="border-color:#018C3E;background:#018C3E"></span><span class="name">魚油<small>1 顆 × 2 次 · 早餐後、晚餐後</small></span><span class="stock">48</span><span class="rtag green">充足</span></div>
+              <div class="r"><span class="circle sm" style="border-color:#EA5504;background:#EA5504"></span><span class="name">維生素 D3<small>1 錠 × 1 次 · 早餐後</small></span><span class="stock">9</span><span class="rtag orange">剩 9 天</span></div>
+              <div class="r"><span class="circle sm" style="border-color:#E60020;background:#E60020"></span><span class="name">益生菌<small>1 包 × 1 次 · 早餐前</small></span><span class="stock">0</span><span class="rtag">補貨</span></div>
+              <div class="r"><span class="circle sm" style="border-color:#018C3E;background:#018C3E"></span><span class="name">鎂<small>2 顆 × 1 次 · 睡前</small></span><span class="stock">60</span><span class="rtag green">充足</span></div>
+              <div class="r"><span class="circle sm" style="border-color:#1D2088"></span><span class="name">B 群<small>1 錠 × 1 次 · 時段尚未確認</small></span><span class="stock">30</span><span class="rtag blue">看建議</span></div>
+            </div>
+          </div>
+
+          <div class="ycard" style="margin-top:12px"><span class="rtag">TIP</span><span class="name">魚油隨餐吃吸收較好<small>脂溶性，建議早餐後或晚餐後。一般資訊，非醫療建議。</small></span></div>
+
+          <nav class="nav">
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>今日</a>
+            <a class="active" href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 7.8l5 8.4"/></svg></span>保健品</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></span>庫存</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>紀錄</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="3"/></svg></span>方案</a>
+          </nav>
+        </div></div>
+        <div class="frame-label">E · 保健品（跑馬燈＋大圓角綠容器）</div>
+      </div>
+
+      <!-- E 方案 -->
+      <div class="frame-wrap">
+        <div class="frame"><div class="screen e">
+          <div class="top">
+            <div class="logo">SuppleMate<small>保健品管理助手</small></div>
+            <span class="menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+          </div>
+          <div class="blue">
+            <h2><span class="en">SUGGESTED PLAN</span>一天這樣吃，比較順</h2>
+            <p>依產品常見的服用時機排成一天。一般資訊，非醫療建議；按「套用」才寫進計畫。</p>
+            <div style="margin-top:10px">
+              <div class="plan"><span class="slot">AM</span><span class="what">早餐後：魚油、維生素 D3<small>脂溶性，隨餐；兩者可以一起吃</small></span></div>
+              <div class="plan"><span class="slot">PM</span><span class="what">晚餐後：魚油<small>第二次</small></span></div>
+              <div class="plan"><span class="slot">NIGHT</span><span class="what">睡前：鎂<small>許多人睡前吃幫助放鬆</small></span></div>
+            </div>
+          </div>
+          <svg class="wave" viewBox="0 0 400 16" preserveAspectRatio="none"><path d="M0 0 C 12 0 12 16 25 16 C 38 16 38 0 50 0 C 62 0 62 16 75 16 C 88 16 88 0 100 0 C 112 0 112 16 125 16 C 138 16 138 0 150 0 C 162 0 162 16 175 16 C 188 16 188 0 200 0 C 212 0 212 16 225 16 C 238 16 238 0 250 0 C 262 0 262 16 275 16 C 288 16 288 0 300 0 C 312 0 312 16 325 16 C 338 16 338 0 350 0 C 362 0 362 16 375 16 C 388 16 388 0 400 0 V0 H0 Z" fill="#1D2088"/></svg>
+
+          <div class="ycard"><span class="rtag">建議補上</span><span class="name">B 群 → 早餐後<small>水溶性，早上隨餐最常見</small></span><a class="btn" href="#">套用</a></div>
+
+          <div class="dots"></div>
+          <div class="tip"><span class="rtag orange">分開吃</span><b>鈣 ＋ 鐵</b>鈣會降低鐵的吸收，建議間隔 2 小時。</div>
+          <div class="tip"><span class="rtag green">可以一起</span><b>魚油 ＋ 維生素 D</b>同為脂溶性，隨餐一起吃吸收都較好。</div>
+          <div class="tip"><span class="rtag blue">小知識</span><b>魚油</b>看成分表的 EPA＋DHA 總量，不是魚油總重；開封後冷藏避光。</div>
+
+          <nav class="nav">
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>今日</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 7.8l5 8.4"/></svg></span>保健品</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></span>庫存</a>
+            <a href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>紀錄</a>
+            <a class="active" href="#"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="3"/></svg></span>方案</a>
+          </nav>
+        </div></div>
+        <div class="frame-label">E · 方案（深藍開場＋波浪＋黃卡＋黑框小知識）</div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 "use server";
 
 import { APIError } from "better-auth";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/auth/better-auth";
 import { LOCAL_USERS } from "@/lib/auth/local-users";
@@ -10,6 +10,8 @@ import { isLocalMode } from "@/lib/config";
 import { getDb } from "@/lib/db/client";
 import type { IntakeResult, Result, StockResult } from "@/lib/domain/ledger";
 import { AppError, unauthorized, type FieldIssue } from "@/lib/errors";
+import type { KnowledgeEntry } from "@/lib/knowledge/types";
+import { generateKnowledge, lookupKnowledge, lookupMany } from "@/lib/services/knowledge";
 import { adjustStockDb, restockDb, reverseIntakeDb, takeIntakeDb } from "@/lib/services/ledger";
 import { updateProfile } from "@/lib/services/profiles";
 import { clientIp, consumeRateLimit } from "@/lib/services/rate-limit";
@@ -17,6 +19,7 @@ import { clearUserData, resetWithSampleData } from "@/lib/services/sample";
 import { loadSnapshot } from "@/lib/services/snapshot";
 import { createSupplement, setSupplementStatus, updateSupplement } from "@/lib/services/supplements";
 import type { Snapshot, TakeIntakeParams } from "@/lib/store/repository";
+import { THEME_COOKIE, isTheme } from "@/lib/theme";
 import type { InventoryTransaction, Supplement, SupplementStatus, UserProfile } from "@/lib/types";
 import { type Credentials, credentialsSchema } from "@/lib/validation/auth";
 
@@ -100,7 +103,44 @@ export async function adjustStockAction(
 }
 
 export async function updateProfileAction(input: unknown): Promise<ActionResult<UserProfile>> {
-  return run(async (userId) => updateProfile(await getDb(), userId, input));
+  return run(async (userId) => {
+    const profile = await updateProfile(await getDb(), userId, input);
+    // 主題另外寫一個 cookie，讓伺服器端第一次渲染就套對主題
+    const theme = (input as { theme?: unknown } | null)?.theme;
+    if (isTheme(theme)) {
+      (await cookies()).set(THEME_COOKIE, theme, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 365,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      });
+    }
+    return profile;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// 保健品小知識（內建資料 → 共用快取 → 使用者按下才請 AI）
+// ---------------------------------------------------------------------------
+
+export async function lookupKnowledgeAction(name: string): Promise<ActionResult<KnowledgeEntry | null>> {
+  return run(async (userId) => lookupKnowledge(await getDb(), userId, name));
+}
+
+export async function lookupKnowledgeManyAction(
+  names: string[],
+): Promise<ActionResult<Record<string, KnowledgeEntry>>> {
+  return run(async (userId) =>
+    lookupMany(
+      await getDb(),
+      userId,
+      Array.isArray(names) ? names.filter((n): n is string => typeof n === "string") : [],
+    ),
+  );
+}
+
+export async function generateKnowledgeAction(name: string): Promise<ActionResult<KnowledgeEntry>> {
+  return run(async (userId) => generateKnowledge(await getDb(), userId, name));
 }
 
 export async function resetSampleDataAction(): Promise<ActionResult<Snapshot>> {

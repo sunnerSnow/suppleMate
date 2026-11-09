@@ -10,10 +10,7 @@ import { restockInputSchema, toFieldErrors, type FieldErrors } from "@/lib/domai
 import { useStore } from "@/lib/store/store-provider";
 import type { Supplement } from "@/lib/types";
 
-/**
- * 補貨對話框。傳入 supplement 即開啟，傳 null 關閉。
- * 表單狀態放在內層元件，關閉再開啟會重新掛載，自然重設。
- */
+/** 補貨對話框。傳入 supplement 即開啟，傳 null 關閉；表單狀態在內層元件，關閉再開會重設。 */
 export function RestockDialog({ supplement, onClose }: { supplement: Supplement | null; onClose: () => void }) {
   return (
     <Dialog
@@ -65,8 +62,6 @@ function RestockForm({ supplement, onDone }: { supplement: Supplement; onDone: (
     }
   };
 
-  const pending = store.isPending(`restock:${supplement.id}`);
-
   return (
     <form onSubmit={submit} noValidate className="flex flex-col gap-4">
       <Field label={`新增數量（${supplement.doseUnit}）`} htmlFor={`${id}-qty`} required error={errors.quantity}>
@@ -105,7 +100,7 @@ function RestockForm({ supplement, onDone }: { supplement: Supplement; onDone: (
           className="min-h-20"
         />
       </Field>
-      <Button type="submit" loading={pending} size="lg" className="mt-1 w-full">
+      <Button type="submit" loading={store.isPending(`restock:${supplement.id}`)} size="lg" block className="mt-1">
         確認補貨
       </Button>
     </form>

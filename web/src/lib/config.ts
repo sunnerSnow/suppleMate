@@ -1,3 +1,5 @@
+import { GEMINI_THINKING_LEVELS, type GeminiThinking, isGeminiThinking } from "@/lib/ai/thinking";
+
 /**
  * 執行模式：
  * - Postgres 模式：有 DATABASE_URL（正式環境用 Neon；也可以是任何 Postgres）
@@ -24,5 +26,48 @@ export function authEnv(): { secret: string; baseURL: string | undefined } {
   return {
     secret: secret ?? "sm-local-demo-secret-not-for-production-0000000000",
     baseURL: process.env.BETTER_AUTH_URL?.trim() || undefined,
+  };
+}
+
+export type AiProviderName = "mock" | "gemini";
+
+export interface AiEnv {
+  provider: AiProviderName;
+  apiKey: string | null;
+  model: string;
+  /** 主要模型過載時改用；空字串表示不換 */
+  fallbackModel: string | null;
+  thinking: GeminiThinking;
+  /** 每位使用者每小時可請 AI 整理的次數 */
+  hourlyLimit: number;
+  /** 全站每 24 小時（免費方案的保險；0 表示不限） */
+  dailyLimit: number;
+}
+
+/** AI 設定：預設 mock；選 gemini 卻沒給金鑰會直接報錯，不會默默改用 mock */
+export function aiEnv(): AiEnv {
+  const provider = (process.env.AI_PROVIDER || "mock").trim();
+  if (provider !== "mock" && provider !== "gemini") {
+    throw new Error(`不支援的 AI_PROVIDER：${provider}（可用：mock、gemini）`);
+  }
+  const apiKey = process.env.GEMINI_API_KEY?.trim() || null;
+  if (provider === "gemini" && !apiKey) {
+    throw new Error("AI_PROVIDER=gemini 需要設定 GEMINI_API_KEY（https://aistudio.google.com）");
+  }
+  const thinking = (process.env.GEMINI_THINKING || "low").trim();
+  if (provider === "gemini" && !isGeminiThinking(thinking)) {
+    throw new Error(`GEMINI_THINKING 只能是 ${GEMINI_THINKING_LEVELS.join("、")}（目前：${thinking}）`);
+  }
+  const fallbackRaw = process.env.GEMINI_FALLBACK_MODEL;
+  const hourlyLimit = Number(process.env.AI_HOURLY_LIMIT ?? 10);
+  const dailyLimit = Number(process.env.AI_DAILY_LIMIT ?? 100);
+  return {
+    provider,
+    apiKey,
+    model: process.env.GEMINI_MODEL?.trim() || "gemini-3.6-flash",
+    fallbackModel: fallbackRaw === undefined ? "gemini-3.5-flash-lite" : fallbackRaw.trim() || null,
+    thinking: isGeminiThinking(thinking) ? thinking : "low",
+    hourlyLimit: Number.isFinite(hourlyLimit) && hourlyLimit > 0 ? Math.floor(hourlyLimit) : 10,
+    dailyLimit: Number.isFinite(dailyLimit) && dailyLimit >= 0 ? Math.floor(dailyLimit) : 100,
   };
 }

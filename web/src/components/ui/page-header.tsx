@@ -1,78 +1,70 @@
 import type { ReactNode } from "react";
 import { cx } from "@/lib/cx";
-import { Sparkle } from "./decor";
-import { TONE_BG, TONE_ON, TONE_TEXT, type Tone } from "./tone";
 
-/**
- * 頁首：英文圓體小標做成彩色貼紙，下面是中文大標。
- */
+/** 頂欄：logo 帶（E 下方有波浪邊）；右側放操作 */
+export function AppTop({ action }: { action?: ReactNode }) {
+  return (
+    <>
+      <header className="app-top">
+        <div className="logo">
+          <span className="main">SuppleMate</span>
+          <span className="sub">保健品管理助手</span>
+        </div>
+        {action}
+      </header>
+      <div className="app-top-edge" aria-hidden />
+    </>
+  );
+}
+
+/** 英文小標：C 是黑色膠囊、E 是深藍大字 */
+export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
+  return <span className={cx("eyebrow", className)}>{children}</span>;
+}
+
+/** 頁面標題區 */
 export function PageHeader({
   eyebrow,
   title,
   description,
   action,
-  tone = "sky",
 }: {
   eyebrow: string;
-  title: string;
+  title: ReactNode;
   description?: ReactNode;
   action?: ReactNode;
-  tone?: Tone;
 }) {
   return (
-    <header className="mb-5 flex items-end justify-between gap-4">
+    <div className="mb-4 flex items-end justify-between gap-3 px-5 pt-3">
       <div className="min-w-0">
-        <Eyebrow tone={tone}>{eyebrow}</Eyebrow>
-        <h1 className="mt-2 text-[28px] font-bold leading-tight text-ink">{title}</h1>
-        {description && <div className="mt-1.5 text-sm text-text-2">{description}</div>}
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <h1 className="h1 mt-2">{title}</h1>
+        {description && <div className="sub-text mt-1.5">{description}</div>}
       </div>
-      {action && <div className="shrink-0 pb-1">{action}</div>}
-    </header>
+      {action && <div className="shrink-0">{action}</div>}
+    </div>
   );
 }
 
-/** 英文小標貼紙 */
-export function Eyebrow({
-  tone = "sky",
-  children,
-  className,
-}: {
-  tone?: Tone;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cx(
-        "font-en inline-flex -rotate-2 items-center gap-1 rounded-full px-3 py-1 text-[12px] font-semibold uppercase tracking-[0.12em]",
-        TONE_BG[tone],
-        TONE_ON[tone],
-        className,
-      )}
-    >
-      <Sparkle className="size-3 opacity-80" />
-      {children}
-    </span>
-  );
-}
-
-/** 區塊小標（例如時段名稱）：彩色圓點＋文字 */
+/** 區塊小標（時段名稱等）＋右側計數；en 是 E 主題顯示的英文小字 */
 export function SectionTitle({
   children,
   aside,
-  tone = "sky",
+  en,
+  done,
 }: {
   children: ReactNode;
   aside?: ReactNode;
-  tone?: Tone;
+  en?: string;
+  done?: boolean;
 }) {
   return (
-    <div className="mb-2.5 flex items-center justify-between gap-3 px-1">
-      <h2 className="flex items-center gap-2 text-[15px] font-bold text-ink">
-        <span aria-hidden className={cx("inline-block size-3 rounded-full", TONE_BG[tone])} />
+    <div className="slot-head">
+      <h2 className="h2">
+        {en && <span className="en">{en}</span>}
         {children}
       </h2>
-      {aside && <div className={cx("font-en tnum text-sm font-semibold", TONE_TEXT[tone])}>{aside}</div>}
+      {aside && <span className={cx("card-count", done && "done")}>{aside}</span>}
     </div>
   );
 }

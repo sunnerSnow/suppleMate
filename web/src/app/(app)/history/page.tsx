@@ -1,13 +1,14 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge, Card } from "@/components/ui/card";
+import { Badge, Cat } from "@/components/ui/card";
 import { Input } from "@/components/ui/field";
 import { ClockIcon } from "@/components/ui/icons";
-import { PageHeader } from "@/components/ui/page-header";
+import { AppTop, PageHeader, SectionTitle } from "@/components/ui/page-header";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/ui/state";
 import { SLOT_LABELS } from "@/lib/constants";
+import { cx } from "@/lib/cx";
 import { formatPlanDate, formatTime, relativeDayLabel } from "@/lib/date";
 import { formatQuantity } from "@/lib/domain/inventory";
 import { useStore } from "@/lib/store/store-provider";
@@ -31,20 +32,24 @@ export default function HistoryPage() {
 
   return (
     <div className="animate-fade-up">
+      <AppTop />
       <PageHeader
-        tone="purple"
         eyebrow="History"
-        title="服用紀錄"
+        title={
+          <>
+            服用<span className="dot-h">紀錄</span>
+          </>
+        }
         description="紀錄保存當時的名稱、用量與單位，之後改設定不會影響這裡。"
       />
 
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mx-5 mb-4 flex items-center gap-2">
         <Input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           aria-label="依日期篩選"
-          className="flex-1 rounded-full"
+          className="round flex-1"
         />
         {date && (
           <Button variant="ghost" size="sm" onClick={() => setDate("")}>
@@ -58,61 +63,40 @@ export default function HistoryPage() {
 
       {store.status === "ready" && groups.length === 0 && (
         <EmptyState
-          tone="purple"
-          icon={<ClockIcon size={32} />}
+          icon={<ClockIcon size={30} />}
           title={date ? "這一天沒有紀錄" : "還沒有服用紀錄"}
           description={date ? "試試其他日期。" : "到今日頁勾選已服用的項目，紀錄就會出現在這裡。"}
         />
       )}
 
       {store.status === "ready" && groups.length > 0 && (
-        <div className="stagger flex flex-col gap-6">
-          {groups.map(([planDate, logs], i) => {
+        <div className="slots mx-5">
+          {groups.map(([planDate, logs]) => {
             const taken = logs.filter((l) => l.status === "taken").length;
             const relative = relativeDayLabel(planDate, store.today);
             return (
-              <section key={planDate} style={{ "--i": i } as CSSProperties}>
-                <div className="mb-2.5 flex items-baseline justify-between px-1">
-                  <h2 className="flex items-center gap-2 text-[15px] font-bold text-ink">
-                    <span aria-hidden className="inline-block size-3 rounded-full bg-purple" />
-                    {relative && <span className="text-purple-text">{relative}</span>}
-                    {formatPlanDate(planDate)}
-                  </h2>
-                  <span className="tnum text-sm font-bold text-purple-text">已服用 {taken} 項</span>
-                </div>
-                <Card className="divide-y-2 divide-cream p-0">
+              <section key={planDate} className={cx("slot", taken > 0 && "done")}>
+                <SectionTitle en={planDate} aside={`已服用 ${taken} 項`} done={taken === logs.length}>
+                  {relative && <span className="mr-1.5 text-accent-2-text">{relative}</span>}
+                  {formatPlanDate(planDate)}
+                </SectionTitle>
+                <div className="slot-items">
                   {logs.map((l) => (
-                    <div key={l.id} className="flex items-center gap-3 px-4 py-3">
-                      <span
-                        aria-hidden
-                        className={`size-2.5 shrink-0 rounded-full ${l.status === "taken" ? "bg-green" : "bg-line-strong"}`}
-                      />
-                      <div className="min-w-0 flex-1">
-                        <p
-                          className={`truncate text-base font-bold ${
-                            l.status === "reversed" ? "text-text-3 line-through" : "text-ink"
-                          }`}
-                        >
+                    <div key={l.id} className={cx("item", l.status === "reversed" && "done")}>
+                      <Cat>{SLOT_LABELS[l.planSlot]}</Cat>
+                      <div className="item-name">
+                        <span className={l.status === "reversed" ? "line-through" : undefined}>
                           {l.supplementNameSnapshot}
-                        </p>
-                        <p className="mt-0.5 text-xs text-text-2">
-                          <span className="tnum font-bold">
-                            {formatQuantity(l.doseSnapshot)} {l.unitSnapshot}
-                          </span>
-                          <span className="mx-1.5 text-text-3">·</span>
-                          {SLOT_LABELS[l.planSlot]}
-                          {l.takenAt && (
-                            <>
-                              <span className="mx-1.5 text-text-3">·</span>
-                              <span className="font-en tnum">{formatTime(l.takenAt, store.timezone)}</span>
-                            </>
-                          )}
-                        </p>
+                        </span>
+                        <small>
+                          <span className="tnum">{formatQuantity(l.doseSnapshot)}</span> {l.unitSnapshot}
+                          {l.takenAt && ` · ${formatTime(l.takenAt, store.timezone)}`}
+                        </small>
                       </div>
-                      {l.status === "taken" ? <Badge tone="green">已服用</Badge> : <Badge tone="neutral">已撤銷</Badge>}
+                      {l.status === "taken" ? <Badge tone="ok">已服用</Badge> : <Badge tone="neutral">已撤銷</Badge>}
                     </div>
                   ))}
-                </Card>
+                </div>
               </section>
             );
           })}

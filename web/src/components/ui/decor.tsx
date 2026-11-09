@@ -1,61 +1,101 @@
 import type { SVGProps } from "react";
 import { cx } from "@/lib/cx";
 
-/** 裝飾用的雲朵，預設白色；純裝飾，aria-hidden */
-export function Cloud({ className, ...rest }: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 120 60" fill="currentColor" aria-hidden className={cx("block", className)} {...rest}>
-      <path d="M28 58h66c13 0 22-8 22-19 0-10-8-18-19-18-1 0-2 0-3 .2C91 10 80 2 67 2 54 2 43 10 40 21c-2-.6-4-1-6-1-11 0-20 8-20 19 0 10 6 19 14 19z" />
-    </svg>
-  );
+/** 波浪分隔線（只在 E 主題顯示） */
+export function Wave({ sky }: { sky?: boolean }) {
+  return <div className={cx("wave", sky && "sky")} aria-hidden />;
 }
 
-/** 圓潤的不規則色塊，當卡片或空狀態的背景 */
-export function Blob({ className, ...rest }: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 200 200" fill="currentColor" aria-hidden className={cx("block", className)} {...rest}>
-      <path d="M165 45c20 24 30 58 18 86s-46 48-80 50-66-12-84-38-20-62-6-88S56 14 86 10s59 11 79 35z" />
-    </svg>
-  );
+/** 黃色點點列（只在 E 主題顯示） */
+export function Dots({ className }: { className?: string }) {
+  return <div className={cx("dots", className)} aria-hidden />;
 }
 
-/** 小星星／亮點 */
-export function Sparkle({ className, ...rest }: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={cx("block", className)} {...rest}>
-      <path d="M12 2c.6 5.5 4.5 9.4 10 10-5.5.6-9.4 4.5-10 10-.6-5.5-4.5-9.4-10-10 5.5-.6 9.4-4.5 10-10z" />
-    </svg>
-  );
-}
-
-/** 波浪分隔線（上方區塊顏色往下方延伸成波浪） */
-export function Wave({ className, ...rest }: SVGProps<SVGSVGElement>) {
+/** 手繪愛心（C 主題的裝飾） */
+export function Heart({ className, ...rest }: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 400 24"
-      preserveAspectRatio="none"
+      viewBox="0 0 24 24"
       fill="currentColor"
+      stroke="var(--line)"
+      strokeWidth="2"
+      strokeLinejoin="round"
       aria-hidden
-      className={cx("block w-full", className)}
+      className={cx("block", className)}
       {...rest}
     >
-      <path d="M0 0h400v8c-25 10-50 14-75 10s-50-14-75-10-50 14-75 10-50-14-75-10S25 22 0 12z" />
+      <path d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.4-7 10-7 10z" />
     </svg>
   );
 }
 
-/** 點點虛線分隔 */
-export function Dots({ className }: { className?: string }) {
+/** 小圖示跑馬燈（只在 E 主題顯示） */
+export function Marquee() {
+  const tiles = (
+    <>
+      <span className="marquee-tile">
+        <CapsuleGlyph />
+      </span>
+      <span className="marquee-tile y">
+        <SunGlyph />
+      </span>
+      <span className="marquee-tile o">
+        <BagGlyph />
+      </span>
+      <span className="marquee-tile b">
+        <DropGlyph />
+      </span>
+      <span className="marquee-tile">
+        <BottleGlyph />
+      </span>
+    </>
+  );
   return (
-    <div
-      aria-hidden
-      className={cx("h-1.5 w-full", className)}
-      style={{
-        backgroundImage: "radial-gradient(circle, currentColor 1.5px, transparent 1.6px)",
-        backgroundSize: "10px 6px",
-        backgroundRepeat: "repeat-x",
-        backgroundPosition: "center",
-      }}
-    />
+    <div className="marquee" aria-hidden>
+      <div className="marquee-track">
+        {tiles}
+        {tiles}
+      </div>
+    </div>
   );
 }
+
+const g = {
+  width: 22,
+  height: 22,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2.4,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+const CapsuleGlyph = () => (
+  <svg {...g}>
+    <rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)" />
+    <path d="M9.5 7.8l5 8.4" />
+  </svg>
+);
+const SunGlyph = () => (
+  <svg {...g} stroke="#1d2088">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2" />
+  </svg>
+);
+const BagGlyph = () => (
+  <svg {...g}>
+    <path d="M6 20h12l-1-10H7z" />
+    <path d="M9 10V6a3 3 0 0 1 6 0v4" />
+  </svg>
+);
+const DropGlyph = () => (
+  <svg {...g} stroke="#1d2088">
+    <path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z" />
+  </svg>
+);
+const BottleGlyph = () => (
+  <svg {...g}>
+    <path d="M9 3h6v3l2 3v11a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9l2-3z" />
+    <path d="M9 13h6" />
+  </svg>
+);
